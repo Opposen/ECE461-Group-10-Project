@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 const { Command } = require("commander");
 const fs = require("fs");
 const path = require("path");
@@ -9,7 +11,7 @@ console.log(figlet.textSync("Package Metrics"));
 
 program
   .version("1.0.0")
-  .description("ACME package metric CLI")
+  .description("ACME package metrics CLI")
   .option("-u, --url  <value>", "inline url")
   .option("-f, --file <value>", "absoulte directory of file containing urls")
   .parse(process.argv);
