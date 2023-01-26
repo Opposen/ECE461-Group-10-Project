@@ -9,11 +9,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 const { Command } = require("commander");
 const fs = require("fs");
 const path = require("path");
 const figlet = require("figlet");
 const program = new Command();
+// import community profile
+const getCommunityProfile_1 = require("./api/getCommunityProfile");
 console.log(figlet.textSync("Package Metrics"));
 program
     .version("1.0.0")
@@ -22,32 +25,27 @@ program
     .option("-f, --file <value>", "absoulte directory of file containing urls")
     .parse(process.argv);
 const options = program.opts();
-function listDirContents(filepath) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const files = yield fs.promises.readdir(filepath);
-            const detailedFilesPromises = files.map((file) => __awaiter(this, void 0, void 0, function* () {
-                let fileDetails = yield fs.promises.lstat(path.resolve(filepath, file));
-                const { size, birthtime } = fileDetails;
-                return { filename: file, "size(KB)": size, created_at: birthtime };
-            }));
-            const detailedFiles = yield Promise.all(detailedFilesPromises);
-            console.table(detailedFiles);
-        }
-        catch (error) {
-            console.error("Error occurred while reading the directory!", error);
-        }
+if (options.url) {
+    console.log(`url: ${options.url}`);
+}
+if (options.file) {
+    const text = fs.readFileSync(path.resolve(options.file), "utf-8");
+    const urlList = text.split("\n");
+    // print contents to console
+    console.log(urlList);
+    // for each url in the list parse the author and package name
+    const packageInfo = urlList.map((url) => {
+        const urlParts = url.split("/");
+        const author = urlParts[urlParts.length - 2];
+        const packageName = urlParts[urlParts.length - 1];
+        console.log(`author: ${author}, package: ${packageName}`);
+        return { author, packageName };
     });
-}
-function createDir(filepath) {
-    if (!fs.existsSync(filepath)) {
-        fs.mkdirSync(filepath);
-        console.log("The directory has been created successfully");
-    }
-}
-function createFile(filepath) {
-    fs.openSync(filepath, "w");
-    console.log("An empty file has been created");
+    // for each package in the list get the community profile
+    packageInfo.forEach((pkg) => __awaiter(void 0, void 0, void 0, function* () {
+        const profile = yield (0, getCommunityProfile_1.getCommunityProfile)(pkg.author, pkg.packageName);
+        console.log(profile);
+    }));
 }
 // if no options are passed show the help page
 if (!process.argv.slice(2).length) {

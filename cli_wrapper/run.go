@@ -10,6 +10,18 @@ import (
 // to generate the executable run "go build ./run.go && mv ./run .." in this directory
 
 /*
+generic function for executing commands
+*/
+func execute(cmd *exec.Cmd) {
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err := cmd.Run()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+/*
 ./run install
 - Installs ay dependencies in userland
 - Should exit 0 if successful
@@ -19,12 +31,7 @@ func install() {
 	// execute npm install from within the "package_metrics_cli" directory
 	os.Chdir("package_metrics_cli")
 	cmd := exec.Command("npm", "install")
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	err := cmd.Run()
-	if err != nil {
-		log.Fatal(err)
-	}
+	execute(cmd)
 }
 
 /*
@@ -37,12 +44,7 @@ func build() {
 	// execute npm run build from within the "package_metrics_cli" directory
 	os.Chdir("package_metrics_cli")
 	cmd := exec.Command("npm", "run", "build")
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	err := cmd.Run()
-	if err != nil {
-		log.Fatal(err)
-	}
+	execute(cmd)
 
 	// maybe: move the built cli to the root directory of the project
 }
@@ -55,16 +57,9 @@ func build() {
 */
 func run() {
 	log.Println("Running CLI")
-	// execute npm run build from within the "package_metrics_cli" directory
-	os.Chdir("package_metrics_cli/out")
-	cmd := exec.Command("node", "index.js")
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	err := cmd.Run()
-	if err != nil {
-		log.Fatal(err)
-	}
-
+	// execute the cli with the URL_FILE as the argument
+	cmd := exec.Command("node", "package_metrics_cli/out/index.js", "-f", os.Args[1])
+	execute(cmd)
 }
 
 func main() {
