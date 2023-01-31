@@ -35,8 +35,8 @@ async function calculateAverageTimeOpen() {
   }
 
   const averageTimeOpen = totalTimeOpen / closedIssueCount;
-  const timeDays = averageTimeOpen / 1440;
-  const responseScore = 1 / timeDays
+  const time3Days = averageTimeOpen / 4320;
+  const responseScore = 1 / time3Days
   return responseScore
   
 }
