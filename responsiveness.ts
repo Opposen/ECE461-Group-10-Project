@@ -35,5 +35,8 @@ async function calculateAverageTimeOpen() {
   }
 
   const averageTimeOpen = totalTimeOpen / closedIssueCount;
-  console.log(`The average time issues were open is: ${averageTimeOpen} seconds.`);
+  const timeDays = averageTimeOpen / 1440;
+  const responseScore = 1 / timeDays
+  return responseScore
+  
 }
