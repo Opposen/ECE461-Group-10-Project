@@ -17,6 +17,7 @@ const figlet = require("figlet");
 const program = new Command();
 // import community profile
 const getCommunityProfile_1 = require("./api/getCommunityProfile");
+const getLicense_1 = require("./api/getLicense");
 console.log(figlet.textSync("Package Metrics"));
 program
     .version("1.0.0")
@@ -44,7 +45,8 @@ if (options.file) {
     // for each package in the list get the community profile
     packageInfo.forEach((pkg) => __awaiter(void 0, void 0, void 0, function* () {
         const profile = yield (0, getCommunityProfile_1.getCommunityProfile)(pkg.author, pkg.packageName);
-        console.log(profile);
+        const spdx_id = yield (0, getLicense_1.getLicense)(pkg.author, pkg.packageName);
+        console.log(`profile: ${profile}, spdx_id: ${spdx_id}`);
     }));
 }
 // if no options are passed show the help page

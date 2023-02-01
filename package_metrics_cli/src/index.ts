@@ -8,6 +8,7 @@ const program = new Command();
 
 // import community profile
 import { getCommunityProfile } from "./api/getCommunityProfile";
+import { getLicense } from "./api/getLicense";
 
 
 console.log(figlet.textSync("Package Metrics"));
@@ -30,21 +31,21 @@ if (options.file) {
     const urlList = text.split("\n")
     // print contents to console
     console.log(urlList);
+
     // for each url in the list parse the author and package name
-    
     const packageInfo = urlList.map((url: string) => {
         const urlParts = url.split("/")
         const author = urlParts[urlParts.length - 2]
         const packageName = urlParts[urlParts.length - 1]
-
-        console.log(`author: ${author}, package: ${packageName}`)
+        // console.log(`author: ${author}, package: ${packageName}`);
         return { author, packageName }
     });
 
     // for each package in the list get the community profile
     packageInfo.forEach(async (pkg: any) => {
         const profile = await getCommunityProfile(pkg.author, pkg.packageName);
-        console.log(profile);
+        const spdx_id = await getLicense(pkg.author, pkg.packageName);
+        console.log(`profile: ${profile}, spdx_id: ${spdx_id}`);
     });
 }
 
