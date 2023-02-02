@@ -17,6 +17,10 @@ const figlet = require("figlet");
 const program = new Command();
 // import community profile
 const getCommunityProfile_1 = require("./api/getCommunityProfile");
+const getReadme_1 = require("./api/getReadme");
+const getLicense_1 = require("./api/getLicense");
+// import metrics
+const licenseCompatibility_1 = require("./metrics/licenseCompatibility");
 console.log(figlet.textSync("Package Metrics"));
 program
     .version("1.0.0")
@@ -31,20 +35,31 @@ if (options.url) {
 if (options.file) {
     const text = fs.readFileSync(path.resolve(options.file), "utf-8");
     const urlList = text.split("\n");
-    // print contents to console
-    console.log(urlList);
     // for each url in the list parse the author and package name
     const packageInfo = urlList.map((url) => {
         const urlParts = url.split("/");
         const author = urlParts[urlParts.length - 2];
         const packageName = urlParts[urlParts.length - 1];
-        console.log(`author: ${author}, package: ${packageName}`);
-        return { author, packageName };
+        return { author, packageName, url };
     });
     // for each package in the list get the community profile
     packageInfo.forEach((pkg) => __awaiter(void 0, void 0, void 0, function* () {
-        const profile = yield (0, getCommunityProfile_1.getCommunityProfile)(pkg.author, pkg.packageName);
-        console.log(profile);
+        // only continue if the url has github.com in it
+        if (pkg.url.includes("github.com")) {
+            try {
+                const communityProfileResponse = yield (0, getCommunityProfile_1.getCommunityProfile)(pkg.author, pkg.packageName);
+                const readmeResponse = yield (0, getReadme_1.getReadme)(pkg.author, pkg.packageName);
+                const licenseResponse = yield (0, getLicense_1.getLicense)(pkg.author, pkg.packageName);
+                const licenseCompatibility = (0, licenseCompatibility_1.calculateLicenseCompatibility)(licenseResponse, readmeResponse);
+                console.log(`${pkg.url} license compatibility: ${licenseCompatibility}`);
+            }
+            catch (error) {
+                console.error(error);
+            }
+        }
+        else {
+            console.log(`${pkg.url} is not a github repository (parse from npm)`);
+        }
     }));
 }
 // if no options are passed show the help page

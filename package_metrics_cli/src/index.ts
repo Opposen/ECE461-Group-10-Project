@@ -8,7 +8,11 @@ const program = new Command();
 
 // import community profile
 import { getCommunityProfile } from "./api/getCommunityProfile";
+import { getReadme } from "./api/getReadme";
+import { getLicense } from "./api/getLicense";
 
+// import metrics
+import { calculateLicenseCompatibility } from "./metrics/licenseCompatibility";
 
 console.log(figlet.textSync("Package Metrics"));
 
@@ -28,23 +32,31 @@ if (options.url) {
 if (options.file) {
     const text = fs.readFileSync(path.resolve(options.file), "utf-8");
     const urlList = text.split("\n")
-    // print contents to console
-    console.log(urlList);
+
     // for each url in the list parse the author and package name
-    
     const packageInfo = urlList.map((url: string) => {
         const urlParts = url.split("/")
         const author = urlParts[urlParts.length - 2]
         const packageName = urlParts[urlParts.length - 1]
-
-        console.log(`author: ${author}, package: ${packageName}`)
-        return { author, packageName }
+        return { author, packageName, url }
     });
 
     // for each package in the list get the community profile
     packageInfo.forEach(async (pkg: any) => {
-        const profile = await getCommunityProfile(pkg.author, pkg.packageName);
-        console.log(profile);
+        // only continue if the url has github.com in it
+        if (pkg.url.includes("github.com")) {
+            try{
+                const communityProfileResponse = await getCommunityProfile(pkg.author, pkg.packageName);
+                const readmeResponse = await getReadme(pkg.author, pkg.packageName);
+                const licenseResponse = await getLicense(pkg.author, pkg.packageName);
+                const licenseCompatibility = calculateLicenseCompatibility(licenseResponse, readmeResponse);
+                console.log(`${pkg.url} license compatibility: ${licenseCompatibility}`)
+            } catch (error) {
+                console.error(error);
+            }
+        } else {
+            console.log(`${pkg.url} is not a github repository (parse from npm)`);
+        }
     });
 }
 

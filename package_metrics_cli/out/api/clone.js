@@ -9,23 +9,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCommunityProfile = void 0;
-const core_1 = require("@octokit/core");
-function getCommunityProfile(owner, repo) {
+exports.cloneRepo = void 0;
+const util_1 = require("util");
+const child_process_1 = require("child_process");
+function cloneRepo(repoUrl, clonePath) {
     return __awaiter(this, void 0, void 0, function* () {
-        const octokit = new core_1.Octokit({ auth: process.env.GITHUB_TOKEN });
+        const command = `git clone ${repoUrl} ${clonePath}`;
         try {
-            const profile = yield octokit.request('GET /repos/{owner}/{repo}/community/profile', {
-                owner,
-                repo,
-            });
-            return profile;
+            var { stdout, stderr } = yield (0, util_1.promisify)(child_process_1.exec)(command);
         }
-        catch (error) {
-            console.error(error);
-            return error;
+        catch (err) {
+            console.log(`Error cloning repo: ${repoUrl}`);
+            throw err;
         }
     });
 }
-exports.getCommunityProfile = getCommunityProfile;
-//# sourceMappingURL=getCommunityProfile.js.map
+exports.cloneRepo = cloneRepo;
+//# sourceMappingURL=clone.js.map

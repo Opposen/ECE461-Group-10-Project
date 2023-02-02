@@ -6,7 +6,7 @@ export async function cloneRepo(repoUrl: string, clonePath: string) {
     try {
         var {stdout, stderr} = await promisify(exec)(command);
     } catch (err) {
-        console.log(`Error cloning repo: ${stdout}`)
+        console.log(`Error cloning repo: ${repoUrl}`)
         throw err;
     }
 }

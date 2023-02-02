@@ -9,23 +9,34 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCommunityProfile = void 0;
+exports.getLicense = void 0;
 const core_1 = require("@octokit/core");
-function getCommunityProfile(owner, repo) {
+function getLicense(owner, repo) {
     return __awaiter(this, void 0, void 0, function* () {
+        // bearer token is process.env.GITHUB_TOKEN
         const octokit = new core_1.Octokit({ auth: process.env.GITHUB_TOKEN });
         try {
-            const profile = yield octokit.request('GET /repos/{owner}/{repo}/community/profile', {
+            // https://docs.github.com/en/graphql/reference/objects#license
+            // get the spdx_id of the license with graphql
+            const response = yield octokit.graphql(`
+                query getLicense($owner: String!, $repo: String!) {
+                    repository(owner: $owner, name: $repo) {
+                        licenseInfo {
+                            spdxId,
+                        }
+                    }
+                }
+            `, {
                 owner,
                 repo,
             });
-            return profile;
+            return response;
         }
         catch (error) {
             console.error(error);
-            return error;
+            throw error;
         }
     });
 }
-exports.getCommunityProfile = getCommunityProfile;
-//# sourceMappingURL=getCommunityProfile.js.map
+exports.getLicense = getLicense;
+//# sourceMappingURL=getLicense.js.map

@@ -9,23 +9,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCommunityProfile = void 0;
-const core_1 = require("@octokit/core");
-function getCommunityProfile(owner, repo) {
+exports.calculateRampUp = void 0;
+function calculateRampUp(profile, readme) {
     return __awaiter(this, void 0, void 0, function* () {
-        const octokit = new core_1.Octokit({ auth: process.env.GITHUB_TOKEN });
-        try {
-            const profile = yield octokit.request('GET /repos/{owner}/{repo}/community/profile', {
-                owner,
-                repo,
-            });
-            return profile;
+        if (profile.data.documentation) {
+            //full score if there is a docs site
+            return 1;
         }
-        catch (error) {
-            console.error(error);
-            return error;
+        else if (profile.data.files.readme && readme.data.size > 100) {
+            if (readme.data.size > 500) {
+                //small readme
+                return 0.25;
+            }
+            else if (readme.data.size > 2500) {
+                //medium readme
+                return 0.5;
+            }
+            else if (readme.data.size > 10000) {
+                //large readme
+                return 0.75;
+            }
         }
     });
 }
-exports.getCommunityProfile = getCommunityProfile;
-//# sourceMappingURL=getCommunityProfile.js.map
+exports.calculateRampUp = calculateRampUp;
+//# sourceMappingURL=rampUp.js.map
