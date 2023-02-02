@@ -9,34 +9,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getLicense = void 0;
-const core_1 = require("@octokit/core");
-function getLicense(owner, repo) {
+exports.correctness = void 0;
+const promises_1 = require("fs/promises");
+const TEST_DIR_NAMES = ['test', 'tests', 'tst', 'tsts'];
+const TEST_FILE_NAMES = TEST_DIR_NAMES.map(name => [name + '.js', name + '.ts']).flat();
+function correctness(repoDir) {
     return __awaiter(this, void 0, void 0, function* () {
-        // bearer token is process.env.GITHUB_TOKEN
-        const octokit = new core_1.Octokit({ auth: process.env.GITHUB_TOKEN });
+        // Retrieve all the entries from the top level directory of the repo
         try {
-            // https://docs.github.com/en/graphql/reference/objects#license
-            // get the spdx_id of the license with graphql
-            const response = yield octokit.graphql(`
-                query getLicense($owner: String!, $repo: String!) {
-                    repository(owner: $owner, name: $repo) {
-                        licenseInfo {
-                            spdxId,
-                        }
-                    }
-                }
-            `, {
-                owner,
-                repo,
-            });
-            return response;
+            var files = yield (0, promises_1.readdir)(repoDir, { withFileTypes: true });
         }
         catch (error) {
-            console.error(error);
+            console.log("Error reading files from GitHub Repo: " + repoDir);
             throw error;
         }
+        // Determine whether there is a tests directory or test file
+        let containsTests = files.some((f) => f.isDirectory() && TEST_DIR_NAMES.includes(f.name) ||
+            f.isFile() && TEST_FILE_NAMES.includes(f.name));
+        return Number(containsTests);
     });
 }
-exports.getLicense = getLicense;
-//# sourceMappingURL=getLicense.js.map
+exports.correctness = correctness;
+//# sourceMappingURL=correctness.js.map
