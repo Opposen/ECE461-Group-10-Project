@@ -2,11 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.calculateLicenseCompatibility = void 0;
 const compatibleLicenses = [
-    "LGPL-3.0",
     "LGPL-2.1",
-    "GPL-3.0",
-    "GPL-2.0",
-    "AGPL-3.0",
+    "BSD-3-Clause",
+    "BSD-2-Clause",
+    "CC0-1.0",
+    "Unlicense",
     "MIT"
 ];
 function calculateLicenseCompatibility(license, readme) {
