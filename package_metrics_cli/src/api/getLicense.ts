@@ -1,7 +1,9 @@
 import { Octokit } from "@octokit/core";
 
+
 export async function getLicense(owner: string, repo: string) {
-    const octokit = new Octokit();
+    // bearer token is process.env.GITHUB_TOKEN
+    const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
     try {
         // https://docs.github.com/en/graphql/reference/objects#license
         // get the spdx_id of the license with graphql
