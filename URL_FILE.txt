@@ -1,2 +1,9 @@
 https://github.com/jonschlinkert/even
 https://github.com/jonschlinkert/odd
+https://github.com/jmforsythe/Git-Heat-Map
+https://github.com/cloudinary/cloudinary_npm
+https://www.npmjs.com/package/express
+https://github.com/nullivex/nodist
+https://github.com/lodash/lodash
+https://www.npmjs.com/package/browserify
+https://github.com/open-mmlab/mmpose

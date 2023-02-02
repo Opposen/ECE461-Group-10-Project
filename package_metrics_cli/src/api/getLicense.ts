@@ -1,7 +1,6 @@
 import { Octokit } from "@octokit/core";
 
-
-export async function getLicense(owner: string, repo: string) {
+export async function getLicense(owner: string, repo: string) : Promise<any> {
     // bearer token is process.env.GITHUB_TOKEN
     const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
     try {
@@ -12,7 +11,7 @@ export async function getLicense(owner: string, repo: string) {
                 query getLicense($owner: String!, $repo: String!) {
                     repository(owner: $owner, name: $repo) {
                         licenseInfo {
-                            spdxId
+                            spdxId,
                         }
                     }
                 }

@@ -13,7 +13,7 @@ exports.getReadme = void 0;
 const core_1 = require("@octokit/core");
 function getReadme(owner, repo) {
     return __awaiter(this, void 0, void 0, function* () {
-        const octokit = new core_1.Octokit();
+        const octokit = new core_1.Octokit({ auth: process.env.GITHUB_TOKEN });
         try {
             const response = yield octokit.request('GET /repos/{owner}/{repo}/readme', {
                 accept: 'application/vnd.github+json',

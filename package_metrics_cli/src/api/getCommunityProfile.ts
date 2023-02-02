@@ -1,7 +1,7 @@
 import { Octokit } from "@octokit/core";
 
 export async function getCommunityProfile(owner: string, repo: string) {
-    const octokit = new Octokit();
+    const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
     try {
         const profile = await octokit.request('GET /repos/{owner}/{repo}/community/profile', {
             owner,
