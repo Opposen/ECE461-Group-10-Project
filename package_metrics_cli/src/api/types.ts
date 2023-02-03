@@ -11,3 +11,4 @@ export type licenseResponse = {
 };
 
 export type readmeResponse = Endpoints["GET /repos/{owner}/{repo}/readme"]["response"];
+

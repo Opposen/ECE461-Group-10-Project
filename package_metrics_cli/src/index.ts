@@ -11,6 +11,7 @@ import { getCommunityProfile } from "./api/getCommunityProfile";
 import { getReadme } from "./api/getReadme";
 import { getLicense } from "./api/getLicense";
 
+
 // import metrics
 import { calculateLicenseCompatibility } from "./metrics/licenseCompatibility";
 
