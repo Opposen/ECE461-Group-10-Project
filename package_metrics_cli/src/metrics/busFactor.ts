@@ -26,5 +26,7 @@ export function calculateBusFactor(contributors: contributorsResponse, commits: 
   const contributorsCount = contributors.data.length;
   const commitsCount = getCommitsCount(commits);
 
-  return commitsCount / contributorsCount;
+  const busFactor = contributorsCount / commitsCount;
+
+  return busFactor > 1 ? 1 : busFactor;
 }
