@@ -4,6 +4,17 @@ import { getCommunityProfile } from '../src/api/getCommunityProfile';
 import { communityProfileResponse, readmeResponse } from "../src/api/types";
 
 const mockRequest = jest.fn()
+const error = jest.spyOn(console, 'error').mockImplementation(() => { });
+
+jest.mock('@octokit/core', () => {
+    return {
+        Octokit: jest.fn().mockImplementation(() => {
+            return {
+                request: mockRequest,
+            }
+        }),
+    }
+})
 
 const testCommunityProfile: communityProfileResponse = {
     headers: {
@@ -28,16 +39,6 @@ const testCommunityProfile: communityProfileResponse = {
     }
 }
 
-jest.mock('@octokit/core', () => {
-    return {
-        Octokit: jest.fn().mockImplementation(() => {
-            return {
-                request: mockRequest,
-            }
-        }),
-    }
-})
-
 describe('community profile api', () => {
     mockRequest.mockReturnValueOnce(testCommunityProfile);
 
@@ -50,6 +51,14 @@ describe('community profile api', () => {
                 "repo": "testRepo"
             }
         );
-        expect
+    });
+
+    mockRequest.mockImplementationOnce(() => {
+        throw new Error('response error');
     })
+
+    test('logs error', async () => {
+        await expect(getCommunityProfile('testOwner', 'testRepo'));
+        expect(error).toBeCalledWith(Error('response error'));
+    });
 });
