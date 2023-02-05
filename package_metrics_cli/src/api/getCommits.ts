@@ -1,10 +1,10 @@
 import { Octokit } from "@octokit/core";
-import { issuesResponse } from "./types";
+import { commitsResponse } from "./types";
 
-export async function getIssues(owner: string, repo: string) : Promise<issuesResponse> {
+export async function getCommits(owner: string, repo: string) : Promise<commitsResponse> {
     const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
     try {
-        const response = await octokit.request('GET /repos/{owner}/{repo}/issues', {
+        const response = await octokit.request('GET /repos/{owner}/{repo}/commits', {
             owner: owner,
             repo: repo,
         });

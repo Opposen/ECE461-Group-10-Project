@@ -1,33 +1,30 @@
-const repoName = "REPO_NAME";
-const ownerRepo = "OWNER_NAME";
-const collaboratorsUrl = `https://api.github.com/repos/${owner}/${repo}/collaborators`;
-const commitsUrl = `https://api.github.com/repos/${owner}/${repo}/commits`;
+import { contributorsResponse, commitsResponse } from "../api/types";
 
-async function getCollaboratorsCounts(): Promise<number> {
-  const response = await fetch(collaboratorsUrl);
-  const collaborators = await response.json();
-  return collaborators.length;
-}
-
-async function getCommitsCount(): Promise<number> {
+function getCommitsCount(commits: commitsResponse): number {
   const currentDate = new Date();
   const oneYearAgo = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), currentDate.getDate());
   const oneYearAgoInSeconds = oneYearAgo.getTime() / 1000;
 
-  const response = await fetch(commitsUrl);
-  const commits = await response.json();
+  const commitsData = commits.data;
   let count = 0;
-  for (const commit of commits) {
-    if (commit.commit.committer.date >= oneYearAgoInSeconds) {
-      count++;
+  for (const commit of commitsData) {
+    // if the commit has a date
+    if (!!commit.commit.committer?.date) {
+      // get the committer date and convert it to seconds
+      const committerDate = commit.commit.committer.date;
+      const committerDateInSeconds = Date.parse(committerDate) / 1000;
+
+      if (committerDateInSeconds >= oneYearAgoInSeconds) {
+        count++;
+      }
     }
   }
   return count;
 }
 
-async function getCommitToCollaboratorRatio(): Promise<number> {
-  const collaboratorsCount = await getCollaboratorsCounts();
-  const commitsCount = await getCommitsCount();
-  
-  return commitsCount / collaboratorsCount;
+export function calculateBusFactor(contributors: contributorsResponse, commits: commitsResponse): number {
+  const contributorsCount = contributors.data.length;
+  const commitsCount = getCommitsCount(commits);
+
+  return commitsCount / contributorsCount;
 }
