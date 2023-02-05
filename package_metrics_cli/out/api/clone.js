@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cloneRepo = void 0;
+exports.createTempFolder = exports.deleteClonedRepo = exports.cloneRepo = void 0;
 const util_1 = require("util");
 const child_process_1 = require("child_process");
 function cloneRepo(repoUrl, clonePath) {
@@ -19,10 +19,34 @@ function cloneRepo(repoUrl, clonePath) {
             var { stdout, stderr } = yield (0, util_1.promisify)(child_process_1.exec)(command);
         }
         catch (err) {
-            console.log(`Error cloning repo: ${repoUrl}`);
+            // console.log(`Error cloning repo: ${repoUrl}`)
             throw err;
         }
     });
 }
 exports.cloneRepo = cloneRepo;
+function deleteClonedRepo(repoPath) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const command = `rm -rf ${repoPath}`;
+        try {
+            var { stdout, stderr } = yield (0, util_1.promisify)(child_process_1.exec)(command);
+        }
+        catch (err) {
+            // console.log(`Error deleting repo: ${repoPath}`)
+            throw err;
+        }
+    });
+}
+exports.deleteClonedRepo = deleteClonedRepo;
+function createTempFolder() {
+    const command = `mkdir ./tmp`;
+    try {
+        var { stdout, stderr } = (0, child_process_1.exec)(command);
+    }
+    catch (err) {
+        // console.log(`Error creating temp folder`)
+        throw err;
+    }
+}
+exports.createTempFolder = createTempFolder;
 //# sourceMappingURL=clone.js.map

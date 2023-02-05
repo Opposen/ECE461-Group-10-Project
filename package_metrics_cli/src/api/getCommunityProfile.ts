@@ -1,6 +1,7 @@
 import { Octokit } from "@octokit/core";
+import { communityProfileResponse } from "./types";
 
-export async function getCommunityProfile(owner: string, repo: string) {
+export async function getCommunityProfile(owner: string, repo: string) : Promise<communityProfileResponse> {
     const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
     try {
         const profile = await octokit.request('GET /repos/{owner}/{repo}/community/profile', {
@@ -10,6 +11,6 @@ export async function getCommunityProfile(owner: string, repo: string) {
         return profile;
     } catch (error) {
         console.error(error);
-        return error;
+        throw error;
     }
 }

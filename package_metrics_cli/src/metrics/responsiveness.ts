@@ -1,42 +1,13 @@
-const repo = "REPO_NAME";
-const owner = "OWNER_NAME";
-const issuesUrl = `https://api.github.com/repos/${owner}/${repo}/issues`;
+import { issuesResponse } from "../api/types";
 
-async function getIssue(): Promise<Array<{ createdAt: number, closedAt?: number }>> {
-  const response = await fetch(issuesUrl);
-  const issues = await response.json();
+// calculate responsiveness metric
+// this is done by taking the number of issues that have been updated and dividing by the total number of issues
+export function calculateResponsiveness(issues: issuesResponse) {
 
-  const issueData: Array<{ createdAt: number, closedAt?: number }> = [];
-  for (const issue of issues) {
-    const createdAt = issue.created_at;
-    const createdTimeInSeconds = Date.parse(createdAt) / 1000;
+    const issueData = issues.data;
+    const issueCount = issueData.length;
+    const responsiveIssues = issueData.filter((issue) => issue.created_at !== issue.updated_at);
+    const responsiveIssueCount = responsiveIssues.length;
 
-    if (issue.closed_at) {
-      const closedAt = issue.closed_at;
-      const closedTimeInSeconds = Date.parse(closedAt) / 1000;
-      issueData.push({ createdAt: createdTimeInSeconds, closedAt: closedTimeInSeconds });
-    } else {
-      issueData.push({ createdAt: createdTimeInSeconds });
-    }
-  }
-  return issueData;
-}
-
-async function calculateAverageTimeOpen() {
-  const issueData = await getIssue();
-
-  let totalTimeOpen = 0;
-  let closedIssueCount = 0;
-  for (const issue of issueData) {
-    if (issue.closedAt) {
-      totalTimeOpen += issue.closedAt - issue.createdAt;
-      closedIssueCount++;
-    }
-  }
-
-  const averageTimeOpen = totalTimeOpen / closedIssueCount;
-  const time3Days = averageTimeOpen / 4320;
-  const responseScore = 1 / time3Days
-  return responseScore
-  
+    return issueCount === 0 ? 0 : responsiveIssueCount / issueCount;
 }

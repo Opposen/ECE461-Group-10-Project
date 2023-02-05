@@ -9,17 +9,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCommunityProfile = void 0;
+exports.getContributors = void 0;
 const core_1 = require("@octokit/core");
-function getCommunityProfile(owner, repo) {
+function getContributors(owner, repo) {
     return __awaiter(this, void 0, void 0, function* () {
         const octokit = new core_1.Octokit({ auth: process.env.GITHUB_TOKEN });
         try {
-            const profile = yield octokit.request('GET /repos/{owner}/{repo}/community/profile', {
-                owner,
-                repo,
+            const response = yield octokit.request('GET /repos/{owner}/{repo}/contributors', {
+                owner: owner,
+                repo: repo,
             });
-            return profile;
+            return response;
         }
         catch (error) {
             console.error(error);
@@ -27,5 +27,5 @@ function getCommunityProfile(owner, repo) {
         }
     });
 }
-exports.getCommunityProfile = getCommunityProfile;
-//# sourceMappingURL=getCommunityProfile.js.map
+exports.getContributors = getContributors;
+//# sourceMappingURL=getContributors.js.map
