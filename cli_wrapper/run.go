@@ -50,6 +50,21 @@ func build() {
 }
 
 /*
+./run test
+- Runs the tests for the node/TS cli
+- Should show total test count and number of tests passed
+- Should show line coverage
+*/
+func test() {
+	log.Println("Testing CLI")
+	// execute npm run test from within the "package_metrics_cli" directory
+	os.Chdir("package_metrics_cli")
+	cmd := exec.Command("npm", "run", "test")
+	execute(cmd)
+}
+
+
+/*
 ./run URL_FILE
 - Runs the CLI with the URL_FILE being the path to the file containing the URLs
 - Should exit 0 if successful
@@ -73,6 +88,8 @@ func main() {
 		install()
 	case "build":
 		build()
+	case "test":
+		test()
 	default:
 		// check if the argument is a file
 		if _, err := os.Stat(os.Args[1]); err == nil {
