@@ -33,9 +33,9 @@ const testCommunityProfile: communityProfileResponse = {
             "issue_template": null,
             "pull_request_template": null,
             "license": null,
-            "readme": null
+            "readme": null,
         },
-        "updated_at": null
+        "updated_at": null,
     }
 }
 
@@ -48,17 +48,15 @@ describe('community profile api', () => {
             "GET /repos/{owner}/{repo}/community/profile",
             {
                 "owner": "testOwner",
-                "repo": "testRepo"
+                "repo": "testRepo",
             }
         );
     });
 
-    mockRequest.mockImplementationOnce(() => {
-        throw new Error('response error');
-    })
+    mockRequest.mockImplementationOnce(() => Promise.reject(new Error('response error')))
 
     test('logs error', async () => {
-        await expect(getCommunityProfile('testOwner', 'testRepo'));
+        await expect(getCommunityProfile('testOwner', 'testRepo')).rejects.toEqual(Error('response error'));
         expect(error).toBeCalledWith(Error('response error'));
     });
 });
