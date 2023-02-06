@@ -1,6 +1,6 @@
 import { communityProfileResponse, readmeResponse } from "../api/types";
 
-export async function calculateRampUp(profile: communityProfileResponse, readme: readmeResponse) {
+export function calculateRampUp(profile: communityProfileResponse, readme: readmeResponse) : number {
     if (profile.data.documentation) {
         //full score if there is a docs site
         return 1;
@@ -16,4 +16,6 @@ export async function calculateRampUp(profile: communityProfileResponse, readme:
             return 0.75
         }
     }
+    // no documentation
+    return 0;
 }

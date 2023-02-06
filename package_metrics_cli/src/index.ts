@@ -10,9 +10,19 @@ const program = new Command();
 import { getCommunityProfile } from "./api/getCommunityProfile";
 import { getReadme } from "./api/getReadme";
 import { getLicense } from "./api/getLicense";
+import { getIssues } from "./api/getIssues";
+import { getContributors } from "./api/getContributors";
+import { getCommits } from "./api/getCommits";
+import { cloneRepo, createTempFolder, deleteClonedRepo } from "./api/clone";
+
 
 // import metrics
 import { calculateLicenseCompatibility } from "./metrics/licenseCompatibility";
+import { calculateRampUp } from "./metrics/rampUp";
+import { calculateResponsiveness } from "./metrics/responsiveness";
+import { calculateBusFactor } from "./metrics/busFactor";
+import { calculateNetScore } from "./metrics/netScore";
+import { calculateCorrectness } from "./metrics/correctness";
 
 console.log(figlet.textSync("Package Metrics"));
 
@@ -41,16 +51,40 @@ if (options.file) {
         return { author, packageName, url }
     });
 
+    // create a tmp directory to clone the repos into
+    if (!fs.existsSync("./tmp")) {
+        try {
+            createTempFolder();
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     // for each package in the list get the community profile
+    console.log('URL NET_SCORE RAMP_UP_SCORE CORRECTNESS_SCORE BUS_FACTOR_SCORE RESPONSIVE_MAINTAINER_SCORE LICENSE_SCORE');
     packageInfo.forEach(async (pkg: any) => {
         // only continue if the url has github.com in it
         if (pkg.url.includes("github.com")) {
-            try{
+            try {
                 const communityProfileResponse = await getCommunityProfile(pkg.author, pkg.packageName);
+                const issuesResponse = await getIssues(pkg.author, pkg.packageName);
                 const readmeResponse = await getReadme(pkg.author, pkg.packageName);
                 const licenseResponse = await getLicense(pkg.author, pkg.packageName);
+                const contributorsResponse = await getContributors(pkg.author, pkg.packageName);
+                const commitsResponse = await getCommits(pkg.author, pkg.packageName);
+                await cloneRepo(pkg.url, `./tmp/${pkg.packageName}`);
+
+                const busFactor = calculateBusFactor(contributorsResponse, commitsResponse);
+                const rampUp = calculateRampUp(communityProfileResponse, readmeResponse);
+                const responsiveness = calculateResponsiveness(issuesResponse);
                 const licenseCompatibility = calculateLicenseCompatibility(licenseResponse, readmeResponse);
-                console.log(`${pkg.url} license compatibility: ${licenseCompatibility}`)
+                const correctness = calculateCorrectness(`./tmp/${pkg.packageName}`);
+                await deleteClonedRepo(`./tmp/${pkg.packageName}`);
+
+                const netScore = calculateNetScore(rampUp, correctness, busFactor, responsiveness, licenseCompatibility);
+                // print all scores the the console rounded to 2 decimal places
+                console.log(`${pkg.url} ${netScore.toFixed(2)} ${rampUp.toFixed(2)} ${correctness.toFixed(2)} ${busFactor.toFixed(2)} ${responsiveness.toFixed(2)} ${licenseCompatibility.toFixed(2)}`)
+                //console.log(`${pkg.url} ${netScore} ${rampUp} ${correctness} ${busFactor} ${responsiveness} ${licenseCompatibility}`)
             } catch (error) {
                 console.error(error);
             }
