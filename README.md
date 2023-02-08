@@ -7,7 +7,7 @@ Liam E Roach
 # to get the cli up-and-running:
 0. there should be an executable `run` in the root directory, if not (or the compiled executable is incompatable with your os) navigate to `/cli_wrapper` and run `make` in the terminal to generate a new executable in the root directory
 1. `./run install` installs dependencies as long as you have the ability to execute go
-2. `./run compile` complies the cli
+2. `./run build` complies the cli
 3. `./run URL_FILE` will run the cli with an ascii delimited file containing ULRs to npm modules 
 
 # Env file
