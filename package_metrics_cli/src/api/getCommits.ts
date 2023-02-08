@@ -7,6 +7,7 @@ export async function getCommits(owner: string, repo: string) : Promise<commitsR
         const response = await octokit.request('GET /repos/{owner}/{repo}/commits', {
             owner: owner,
             repo: repo,
+            per_page: 100,
         });
         return response;
     } catch (error) {

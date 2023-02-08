@@ -7,6 +7,7 @@ export async function getIssues(owner: string, repo: string) : Promise<issuesRes
         const response = await octokit.request('GET /repos/{owner}/{repo}/issues', {
             owner: owner,
             repo: repo,
+            per_page: 100,
         });
         return response;
     } catch (error) {

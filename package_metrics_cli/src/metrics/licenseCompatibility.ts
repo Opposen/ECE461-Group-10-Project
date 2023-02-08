@@ -1,6 +1,7 @@
 import { licenseResponse } from "../api/types";
 import { readmeResponse } from "../api/types";
 
+// list of compatible licenses
 const compatibleLicenses = [
     "LGPL-2.1",
     "BSD-3-Clause",
@@ -10,6 +11,9 @@ const compatibleLicenses = [
     "MIT"
 ];
 
+// the license compatibility metric is calculated by checking if the license is compatible
+// if the license is not compatible, then the readme is checked for a compatible license
+// if the license is compatible, then the metric returns 1 if not it returns 0
 export function calculateLicenseCompatibility(license: licenseResponse, readme: readmeResponse) {
     // check for compatible licenses
     if(license?.repository?.licenseInfo?.spdxId && compatibleLicenses.includes(license.repository.licenseInfo.spdxId)) {

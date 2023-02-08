@@ -1,5 +1,6 @@
 #! /usr/bin/env node
 
+require("dotenv").config({ path: ".env" }); // load environment variables from .env file
 const { Command } = require("commander");
 const fs = require("fs");
 const path = require("path");
@@ -29,7 +30,7 @@ console.log(figlet.textSync("Package Metrics"));
 program
     .version("1.0.0")
     .description("ACME package metrics CLI")
-    .option("-u, --url  <value>", "inline url")
+    .option("-u, --url  <value>", "inline url") // not in use
     .option("-f, --file <value>", "absoulte directory of file containing urls")
     .parse(process.argv);
 

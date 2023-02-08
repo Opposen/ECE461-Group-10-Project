@@ -18,6 +18,7 @@ function getCommits(owner, repo) {
             const response = yield octokit.request('GET /repos/{owner}/{repo}/commits', {
                 owner: owner,
                 repo: repo,
+                per_page: 100,
             });
             return response;
         }

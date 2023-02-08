@@ -18,6 +18,7 @@ function getIssues(owner, repo) {
             const response = yield octokit.request('GET /repos/{owner}/{repo}/issues', {
                 owner: owner,
                 repo: repo,
+                per_page: 100,
             });
             return response;
         }
