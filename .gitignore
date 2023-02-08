@@ -2,3 +2,4 @@
 /package_metrics_cli/coverage
 /package_metrics_cli/out
 /tmp
+.env

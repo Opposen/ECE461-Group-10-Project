@@ -18,6 +18,7 @@ function getContributors(owner, repo) {
             const response = yield octokit.request('GET /repos/{owner}/{repo}/contributors', {
                 owner: owner,
                 repo: repo,
+                per_page: 100,
             });
             return response;
         }

@@ -7,6 +7,7 @@ export async function getContributors(owner: string, repo: string): Promise<cont
         const response = await octokit.request('GET /repos/{owner}/{repo}/contributors', {
             owner: owner,
             repo: repo,
+            per_page: 100,
         });
         return response;
     } catch (error) {
