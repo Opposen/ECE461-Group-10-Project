@@ -1,7 +1,12 @@
-import Octokit from '@octokit/core';
-import { describe, expect, jest, test, beforeEach } from '@jest/globals';
+import { describe, expect, jest, test, beforeEach, afterEach } from '@jest/globals';
+import { cloneRepo, deleteClonedRepo, createTempFolder } from '../src/api/clone';
+import { getCommits } from '../src/api/getCommits';
 import { getCommunityProfile } from '../src/api/getCommunityProfile';
-import { communityProfileResponse, readmeResponse } from "../src/api/types";
+import { getContributors } from '../src/api/getContributors';
+import { getIssues } from '../src/api/getIssues';
+import { getLicense } from '../src/api/getLicense';
+import { getReadme } from '../src/api/getReadme';
+import { testCommunityProfile, testCommits, testContributors, testIssues, testLicense, testReadme } from './sampleResponses';
 
 const mockRequest = jest.fn()
 const error = jest.spyOn(console, 'error').mockImplementation(() => { });
