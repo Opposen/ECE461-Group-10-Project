@@ -13,7 +13,7 @@ jest.mock('@octokit/core', () => {
                 request: mockRequest,
             }
         }),
-    }
+    };
 })
 
 const testCommunityProfile: communityProfileResponse = {
