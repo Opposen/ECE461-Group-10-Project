@@ -93,7 +93,7 @@ if (options.file) {
             console.log(`${url} ${netScore.toFixed(2)} ${rampUp.toFixed(2)} ${correctness.toFixed(2)} ${busFactor.toFixed(2)} ${responsiveness.toFixed(2)} ${licenseCompatibility.toFixed(2)}`)
             //console.log(`${url} ${netScore} ${rampUp} ${correctness} ${busFactor} ${responsiveness} ${licenseCompatibility}`)
         } catch (error) {
-            console.error(error);
+            //console.error(error); // uncomment to see error messages
         }
     });
 }
