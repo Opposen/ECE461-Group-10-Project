@@ -1,5 +1,4 @@
 import { describe, expect, jest, test, beforeEach, afterEach } from '@jest/globals';
-import { cloneRepo, deleteClonedRepo, createTempFolder } from '../src/api/clone';
 import { getCommits } from '../src/api/getCommits';
 import { getCommunityProfile } from '../src/api/getCommunityProfile';
 import { getContributors } from '../src/api/getContributors';
@@ -66,6 +65,29 @@ describe('community profile api', () => {
 
     test('logs error', async () => {
         await expect(getCommunityProfile('testOwner', 'testRepo')).rejects.toEqual(Error('response error'));
+        expect(error).toBeCalledWith(Error('response error'));
+    });
+});
+
+describe('contributors api', () => {
+    mockRequest.mockReturnValueOnce(testContributors);
+
+    test('gets and returns community profile', async () => {
+        await expect(getContributors('testOwner', 'testRepo')).resolves.toBe(testContributors);
+        expect(mockRequest).toBeCalledWith(
+            "GET /repos/{owner}/{repo}/contributors",
+            {
+                "owner": "testOwner",
+                "per_page": 100,
+                "repo": "testRepo",
+            }
+        );
+    });
+
+    mockRequest.mockImplementationOnce(() => Promise.reject(new Error('response error')));
+
+    test('logs error', async () => {
+        await expect(getContributors('testOwner', 'testRepo')).rejects.toEqual(Error('response error'));
         expect(error).toBeCalledWith(Error('response error'));
     });
 });
