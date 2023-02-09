@@ -1,5 +1,6 @@
 /package_metrics_cli/node_modules
 /package_metrics_cli/coverage
 /package_metrics_cli/out
+/package_metrics_cli/testResults.json
 /tmp
 .env
