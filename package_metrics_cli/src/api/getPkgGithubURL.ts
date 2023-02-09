@@ -6,7 +6,7 @@ export async function getPkgGithubURL(name: string, version: string): Promise<st
   const url = (pkg.repository || pkg.homepage).url;
   const parsed = parse(url);
   if (parsed == null) {
-    throw Error('NPM pkg does not have valid GitHub URL');
+	  throw Error(`${name} does not have a github repository`);
   }
   return `https://github.com/${parsed.repository}`;
 }

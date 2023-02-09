@@ -1,1 +1,3 @@
 https://github.com/lodash/lodash
+https://www.npmjs.com/package/File
+https://www.npmjs.com/package/browserify
