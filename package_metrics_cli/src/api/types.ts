@@ -18,3 +18,12 @@ export type licenseResponse = {
 
 export type readmeResponse = Endpoints["GET /repos/{owner}/{repo}/readme"]["response"];
 
+export type pkgResponse = {
+    repository: {
+        url: string
+    },
+    homepage: {
+        url: string
+    }
+};
+
