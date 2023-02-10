@@ -1,4 +1,5 @@
 import { contributorsResponse, commitsResponse } from "../api/types";
+import { logToFile } from "../logging/logging";
 
 // the bus factor is the number of contributors divided by the number of commits
 // if the bus factor is greater than 1, then the bus factor is 1 (maximum score)
@@ -9,7 +10,9 @@ export function calculateBusFactor(contributors: contributorsResponse, commits: 
   const commitsCount = commits.data.length;
   const busFactor = contributorsCount / commitsCount;
 
-  // console.log("bf: ", busFactor, "comCount: ", commitsCount, "contCount: ", contributorsCount)
+  logToFile(commitsCount, 2, "Commits Count");
+  logToFile(contributorsCount, 2, "Contributors Count");
+  logToFile(busFactor, 1, "Bus Factor");
 
   return busFactor > 1 ? 1 : busFactor;
 }

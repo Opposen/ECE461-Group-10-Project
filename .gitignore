@@ -4,3 +4,4 @@
 /package_metrics_cli/testResults.json
 /tmp
 .env
+.package-cli.log
