@@ -8,6 +8,9 @@ const figlet = require("figlet");
 const program = new Command();
 const parse = require("parse-github-url");
 
+// import logging
+import { logToFile } from "./logging/logging";
+
 // import community profile
 import { getCommunityProfile } from "./api/getCommunityProfile";
 import { getReadme } from "./api/getReadme";
@@ -58,6 +61,9 @@ if (options.file) {
     // for each package in the list get the community profile
     console.log('URL NET_SCORE RAMP_UP_SCORE CORRECTNESS_SCORE BUS_FACTOR_SCORE RESPONSIVE_MAINTAINER_SCORE LICENSE_SCORE');
     urlList.forEach(async (url: string) => {
+
+        logToFile(url, 1, "URL");
+
 		// convert npmjs url to github url if necessary
 		let githubURL = url;
 		if (url.includes("npmjs.com")) {
@@ -66,6 +72,7 @@ if (options.file) {
 				githubURL = await getPkgGithubURL(pkgName, 'latest');
 			} catch (error) {
 				console.log(`${url} does not have a github repository`);
+                logToFile(url, 1, "URL", "does not have a github repository");
 				return;
 			}
 		}
@@ -93,7 +100,7 @@ if (options.file) {
             console.log(`${url} ${netScore.toFixed(2)} ${rampUp.toFixed(2)} ${correctness.toFixed(2)} ${busFactor.toFixed(2)} ${responsiveness.toFixed(2)} ${licenseCompatibility.toFixed(2)}`)
             //console.log(`${url} ${netScore} ${rampUp} ${correctness} ${busFactor} ${responsiveness} ${licenseCompatibility}`)
         } catch (error) {
-            //console.error(error); // uncomment to see error messages
+            logToFile(error, 1, "ERROR");
         }
     });
 }
