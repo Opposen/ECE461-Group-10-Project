@@ -91,3 +91,26 @@ describe('contributors api', () => {
         expect(error).toBeCalledWith(Error('response error'));
     });
 });
+
+describe('issues api', () => {
+    mockRequest.mockReturnValueOnce(testIssues);
+
+    test('gets and returns community profile', async () => {
+        await expect(getIssues('testOwner', 'testRepo')).resolves.toBe(testIssues);
+        expect(mockRequest).toBeCalledWith(
+            "GET /repos/{owner}/{repo}/issues",
+            {
+                "owner": "testOwner",
+                "per_page": 100,
+                "repo": "testRepo",
+            }
+        );
+    });
+
+    mockRequest.mockImplementationOnce(() => Promise.reject(new Error('response error')));
+
+    test('logs error', async () => {
+        await expect(getIssues('testOwner', 'testRepo')).rejects.toEqual(Error('response error'));
+        expect(error).toBeCalledWith(Error('response error'));
+    });
+});
