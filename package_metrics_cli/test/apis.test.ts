@@ -15,6 +15,7 @@ jest.mock('@octokit/core', () => {
         Octokit: jest.fn().mockImplementation(() => {
             return {
                 request: mockRequest,
+                graphql: mockRequest,
             };
         }),
     };
@@ -24,10 +25,10 @@ afterEach(() => {
     jest.clearAllMocks();
 });
 
-describe('commit api', () => {
+describe('commits api', () => {
     mockRequest.mockReturnValueOnce(testCommits);
 
-    test('gets and returns community profile', async () => {
+    test('gets and returns commits', async () => {
         await expect(getCommits('testOwner', 'testRepo')).resolves.toBe(testCommits);
         expect(mockRequest).toBeCalledWith(
             "GET /repos/{owner}/{repo}/commits",
@@ -72,7 +73,7 @@ describe('community profile api', () => {
 describe('contributors api', () => {
     mockRequest.mockReturnValueOnce(testContributors);
 
-    test('gets and returns community profile', async () => {
+    test('gets and returns contributors', async () => {
         await expect(getContributors('testOwner', 'testRepo')).resolves.toBe(testContributors);
         expect(mockRequest).toBeCalledWith(
             "GET /repos/{owner}/{repo}/contributors",
@@ -95,7 +96,7 @@ describe('contributors api', () => {
 describe('issues api', () => {
     mockRequest.mockReturnValueOnce(testIssues);
 
-    test('gets and returns community profile', async () => {
+    test('gets and returns issues', async () => {
         await expect(getIssues('testOwner', 'testRepo')).resolves.toBe(testIssues);
         expect(mockRequest).toBeCalledWith(
             "GET /repos/{owner}/{repo}/issues",
@@ -115,10 +116,40 @@ describe('issues api', () => {
     });
 });
 
+describe('license api', () => {
+    mockRequest.mockReturnValueOnce(testLicense);
+
+    test('gets and returns license', async () => {
+        await expect(getLicense('testOwner', 'testRepo')).resolves.toBe(testLicense);
+        expect(mockRequest).toBeCalledWith(
+            `
+                query getLicense($owner: String!, $repo: String!) {
+                    repository(owner: $owner, name: $repo) {
+                        licenseInfo {
+                            spdxId,
+                        }
+                    }
+                }
+            `,
+            {
+                "owner": "testOwner",
+                "repo": "testRepo"
+            }
+        );
+    });
+
+    mockRequest.mockImplementationOnce(() => Promise.reject(new Error('response error')));
+
+    test('logs error', async () => {
+        await expect(getLicense('testOwner', 'testRepo')).rejects.toEqual(Error('response error'));
+        expect(error).toBeCalledWith(Error('response error'));
+    });
+});
+
 describe('readme api', () => {
     mockRequest.mockReturnValueOnce(testReadme);
 
-    test('gets and returns community profile', async () => {
+    test('gets and returns readme', async () => {
         await expect(getReadme('testOwner', 'testRepo')).resolves.toBe(testReadme);
         expect(mockRequest).toBeCalledWith(
             "GET /repos/{owner}/{repo}/readme",
