@@ -114,3 +114,26 @@ describe('issues api', () => {
         expect(error).toBeCalledWith(Error('response error'));
     });
 });
+
+describe('readme api', () => {
+    mockRequest.mockReturnValueOnce(testReadme);
+
+    test('gets and returns community profile', async () => {
+        await expect(getReadme('testOwner', 'testRepo')).resolves.toBe(testReadme);
+        expect(mockRequest).toBeCalledWith(
+            "GET /repos/{owner}/{repo}/readme",
+            {
+                "accept": "application/vnd.github+json",
+                "owner": "testOwner",
+                "repo": "testRepo",
+            }
+        );
+    });
+
+    mockRequest.mockImplementationOnce(() => Promise.reject(new Error('response error')));
+
+    test('logs error', async () => {
+        await expect(getReadme('testOwner', 'testRepo')).rejects.toEqual(Error('response error'));
+        expect(error).toBeCalledWith(Error('response error'));
+    });
+});
