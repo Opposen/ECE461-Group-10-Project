@@ -1,4 +1,5 @@
 import { Dirent, readdirSync } from "fs";
+import { logToFile } from "../logging/logging";
 
 const TEST_NAMES = ['Test', 'Tests', 'Tst', 'Tsts', 'test', 'tests', 'tst', 'tsts'];
 
@@ -12,6 +13,8 @@ export function calculateCorrectness(repoDir: string): number {
 
     // Determine whether there is a directory or file that contains the word 'test' in the name
     let containsTests: boolean = directoryContents.some((f: string) => TEST_NAMES.some((testName: string) => f.includes(testName)));
+
+    logToFile(containsTests, 1, "Correctness");
 
     return Number(containsTests);
 }

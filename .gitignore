@@ -3,3 +3,4 @@
 /package_metrics_cli/out
 /tmp
 .env
+.package-cli.log
