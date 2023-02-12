@@ -1,6 +1,4 @@
 import { describe, expect, jest, test, afterEach } from '@jest/globals';
-//import { logToFile } from "../src/logging/logging";
-import { Dirent, readdirSync } from "fs";
 import { calculateBusFactor } from '../src/metrics/busFactor';
 import { calculateCorrectness } from '../src/metrics/correctness';
 import { calculateLicenseCompatibility } from '../src/metrics/licenseCompatibility';
