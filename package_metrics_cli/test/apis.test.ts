@@ -1,4 +1,6 @@
 import { describe, expect, jest, test, beforeEach, afterEach } from '@jest/globals';
+//import { exec } from 'child_process';
+import { cloneRepo, deleteClonedRepo, createTempFolder } from '../src/api/clone';
 import { getCommits } from '../src/api/getCommits';
 import { getCommunityProfile } from '../src/api/getCommunityProfile';
 import { getContributors } from '../src/api/getContributors';
@@ -9,6 +11,9 @@ import { testCommunityProfile, testCommits, testContributors, testIssues, testLi
 
 const mockRequest = jest.fn();
 const error = jest.spyOn(console, 'error').mockImplementation(() => { });
+const child_process = require('child_process');
+
+jest.mock('child_process');
 
 jest.mock('@octokit/core', () => {
     return {
@@ -23,6 +28,51 @@ jest.mock('@octokit/core', () => {
 
 afterEach(() => {
     jest.clearAllMocks();
+});
+
+describe('clone tests', () => {
+    let repoUrl: string = 'https://api.github.com/repos/octocat/Hello-World/';
+    let testPath: string = './tmp/Hello-World';
+
+    test('clones repo', async () => {
+        child_process.exec.mockImplementationOnce((command: any, callback: any) => callback(null, { stdout: 'ok' }));
+        await cloneRepo(repoUrl, testPath);
+        expect(child_process.exec).toBeCalled();
+    });
+
+    test('cloneRepo handles error', async () => {
+        child_process.exec.mockImplementationOnce((command: any, callback: any) => callback(new Error('response error'), new Error('response error')));
+        await expect(cloneRepo(repoUrl, testPath)).rejects.toEqual(Error('response error'));
+    });
+
+    test('deletes repo', async () => {
+        child_process.exec.mockImplementationOnce((command: any, callback: any) => callback(null, { stdout: 'ok' }));
+        await deleteClonedRepo(testPath);
+        expect(child_process.exec).toBeCalled();
+    });
+
+    test('deleteClonedRepo handles error', async () => {
+        child_process.exec.mockImplementationOnce((command: any, callback: any) => callback(new Error('response error'), null));
+        await expect(deleteClonedRepo(testPath)).rejects.toEqual(Error('response error'));
+    });
+
+    test('creates temp folder', async () => {
+        child_process.exec.mockReturnValueOnce({ stdOut: '', stderr: '' });
+        createTempFolder();
+        expect(child_process.exec).toBeCalled();
+    });
+
+    test('createTempFolder handles error', async () => {
+        child_process.exec.mockImplementation(() => {
+            throw 'error';
+        });
+        try {
+            createTempFolder();
+        } catch (e) {
+            expect(child_process.exec).toBeCalled();
+            expect(e).toEqual("error");
+        }
+    });
 });
 
 describe('commits api', () => {
