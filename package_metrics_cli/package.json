@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "build": "npx tsc",
-    "test": "jest --coverage --json --outputFile=testResults.json"
+    "test": "jest --silent --coverage  --coverageReporters=\"json-summary\" --json --outputFile=\"./coverage/output-final.json\"",
+    "tests-total": "node -e \"console.log('Total: ' + JSON.parse(require('fs').readFileSync('coverage/output-final.json')).numTotalTests)\"",
+    "tests-passed": "node -e \"console.log('Passed: ' + JSON.parse(require('fs').readFileSync('coverage/output-final.json')).numPassedTests)\"",
+    "coverage": "node -e \"console.log('Coverage: ' + JSON.parse(require('fs').readFileSync('coverage/coverage-summary.json')).total.lines.pct)\""
   },
   "keywords": [],
   "author": "",

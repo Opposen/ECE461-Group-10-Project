@@ -61,7 +61,23 @@ func test() {
 	os.Chdir("package_metrics_cli")
 	cmd := exec.Command("npm", "run", "test")
 	execute(cmd)
-}
+
+	// parse numTotalTests and numPassedTests from /coverage/output-final.json
+	if _, err := os.Stat("coverage/output-final.json"); err == nil {
+		// file exists
+		cmd := exec.Command("node", "-e", "console.log('Total: ' + JSON.parse(fs.readFileSync('coverage/output-final.json')).numTotalTests)")
+		execute(cmd)
+		cmd = exec.Command("node", "-e", "console.log('Passed: ' + JSON.parse(fs.readFileSync('coverage/output-final.json')).numPassedTests)")
+		execute(cmd)
+	}
+
+	// get lineCoverage from /coverage/coverage-final.json
+	if _, err := os.Stat("coverage/coverage-final.json"); err == nil {
+		// file exists
+		cmd := exec.Command("node", "-e", "console.log('Coverage: ' + JSON.parse(fs.readFileSync('coverage/coverage-summary.json')).total.lines.pct + '%')")
+		execute(cmd)
+	}
+}	
 
 
 /*
