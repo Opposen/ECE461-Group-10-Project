@@ -210,7 +210,7 @@ export const testReadme: readmeResponse = {
     data: {
         "type": "file",
         "encoding": "base64",
-        "size": 5362,
+        "size": 0,
         "name": "README.md",
         "path": "README.md",
         "content": "encoded content ...",
