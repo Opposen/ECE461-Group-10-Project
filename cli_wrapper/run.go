@@ -62,6 +62,8 @@ func test() {
 	cmd := exec.Command("bash", "-c", "npm run test > /dev/null 2>&1")
 	execute(cmd)
 
+	error := false
+
 	// parse numTotalTests and numPassedTests from /coverage/output-final.json
 	if _, err := os.Stat("coverage/output-final.json"); err == nil {
 		// file exists
@@ -69,12 +71,23 @@ func test() {
 		execute(cmd)
 		cmd = exec.Command("node", "-e", "console.log('Passed: ' + JSON.parse(fs.readFileSync('coverage/output-final.json')).numPassedTests)")
 		execute(cmd)
+	} else {
+		error = true
 	}
 
 	// get lineCoverage from /coverage/coverage-final.json
 	if _, err := os.Stat("coverage/coverage-final.json"); err == nil {
 		// file exists
 		cmd := exec.Command("node", "-e", "console.log('Coverage: ' + JSON.parse(fs.readFileSync('coverage/coverage-summary.json')).total.lines.pct + '%')")
+		execute(cmd)
+	} else {
+		error = true
+	}
+
+	// if both files exist
+	if !error {
+		// print X/Y test cases passed. Z% line coverage achieved.
+		cmd := exec.Command("node", "-e", "console.log(JSON.parse(fs.readFileSync('coverage/output-final.json')).numPassedTests + '/' + JSON.parse(fs.readFileSync('coverage/output-final.json')).numTotalTests + ' test cases passed. ' + JSON.parse(fs.readFileSync('coverage/coverage-summary.json')).total.lines.pct + '% line coverage achieved.')")
 		execute(cmd)
 	}
 }	
