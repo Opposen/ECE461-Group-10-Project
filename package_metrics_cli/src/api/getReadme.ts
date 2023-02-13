@@ -11,6 +11,6 @@ export async function getReadme(owner: string, repo: string) : Promise<any> {
         return response;
     } catch (error) {
         console.error(error);
-        return error;
+        throw error;
     }
 }

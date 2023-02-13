@@ -1,0 +1,1 @@
+process.env.LOG_FILE = 'foo'
