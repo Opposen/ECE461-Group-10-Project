@@ -27,11 +27,12 @@ func execute(cmd *exec.Cmd) {
 - Should exit 0 if successful
 */
 func install() {
-	log.Println("Installing dependencies in userland...")
+	// log.Println("Installing dependencies in userland...")
 	// execute npm install from within the "package_metrics_cli" directory
 	os.Chdir("package_metrics_cli")
-	cmd := exec.Command("bash", "-c", "npm install")
+	cmd := exec.Command("bash", "-c", "npm install > /dev/null 2>&1")
 	execute(cmd)
+	log.Println("Dependencies installed")
 }
 
 /*
@@ -43,9 +44,9 @@ func build() {
 	// log.Println("Building CLI")
 	// execute npm run build from within the "package_metrics_cli" directory
 	os.Chdir("package_metrics_cli")
-	cmd := exec.Command("bash", "-c", "npm run build")
+	cmd := exec.Command("bash", "-c", "npm run build > /dev/null 2>&1")
 	execute(cmd)
-
+	log.Println("CLI built")
 	// maybe: move the built cli to the root directory of the project
 }
 
