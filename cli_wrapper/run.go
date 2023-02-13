@@ -30,7 +30,7 @@ func install() {
 	log.Println("Installing dependencies in userland...")
 	// execute npm install from within the "package_metrics_cli" directory
 	os.Chdir("package_metrics_cli")
-	cmd := exec.Command("npm", "install")
+	cmd := exec.Command("bash", "-c", "npm install")
 	execute(cmd)
 }
 
@@ -40,10 +40,10 @@ func install() {
 - Should exit 0 if successful
 */
 func build() {
-	log.Println("Building CLI")
+	// log.Println("Building CLI")
 	// execute npm run build from within the "package_metrics_cli" directory
 	os.Chdir("package_metrics_cli")
-	cmd := exec.Command("npm", "run", "build")
+	cmd := exec.Command("bash", "-c", "npm run build")
 	execute(cmd)
 
 	// maybe: move the built cli to the root directory of the project
@@ -56,10 +56,10 @@ func build() {
 - Should show line coverage
 */
 func test() {
-	log.Println("Testing CLI")
+	// log.Println("Testing CLI")
 	// execute npm run test from within the "package_metrics_cli" directory
 	os.Chdir("package_metrics_cli")
-	cmd := exec.Command("npm", "run", "test")
+	cmd := exec.Command("bash", "-c", "npm run test > /dev/null 2>&1")
 	execute(cmd)
 
 	// parse numTotalTests and numPassedTests from /coverage/output-final.json
@@ -87,7 +87,7 @@ func test() {
 - Should print all CLI output to stdout
 */
 func run() {
-	log.Println("Running CLI")
+	// log.Println("Running CLI")
 	// execute the cli with the URL_FILE as the argument
 	cmd := exec.Command("node", "package_metrics_cli/out/index.js", "-f", os.Args[1])
 	execute(cmd)
