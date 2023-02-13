@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
@@ -32,7 +33,7 @@ func install() {
 	os.Chdir("package_metrics_cli")
 	cmd := exec.Command("bash", "-c", "npm install > /dev/null 2>&1")
 	execute(cmd)
-	log.Println("Dependencies installed")
+	fmt.Println("Dependencies installed")
 }
 
 /*
@@ -46,7 +47,7 @@ func build() {
 	os.Chdir("package_metrics_cli")
 	cmd := exec.Command("bash", "-c", "npm run build > /dev/null 2>&1")
 	execute(cmd)
-	log.Println("CLI built")
+	fmt.Println("CLI built")
 	// maybe: move the built cli to the root directory of the project
 }
 
