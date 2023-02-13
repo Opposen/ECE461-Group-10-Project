@@ -4,7 +4,6 @@ require("dotenv").config({ path: ".env" }); // load environment variables from .
 const { Command } = require("commander");
 const fs = require("fs");
 const path = require("path");
-const figlet = require("figlet");
 const program = new Command();
 const parse = require("parse-github-url");
 
@@ -29,8 +28,6 @@ import { calculateResponsiveness } from "./metrics/responsiveness";
 import { calculateBusFactor } from "./metrics/busFactor";
 import { calculateNetScore } from "./metrics/netScore";
 import { calculateCorrectness } from "./metrics/correctness";
-
-console.log(figlet.textSync("Package Metrics"));
 
 program
     .version("1.0.0")
