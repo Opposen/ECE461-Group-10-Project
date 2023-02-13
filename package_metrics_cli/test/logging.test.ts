@@ -1,5 +1,4 @@
-import { describe, expect, jest, test, afterEach } from '@jest/globals';
-import { fstat } from 'fs';
+import { describe, expect, jest, test } from '@jest/globals';
 import fs from 'fs';
 import { logToFile } from '../src/logging/logging';
 
