@@ -78,7 +78,7 @@ func test() {
 	}
 
 	// get lineCoverage from /coverage/coverage-final.json
-	if _, err := os.Stat("coverage/coverage-final.json"); err == nil {
+	if _, err := os.Stat("coverage/coverage-summary.json"); err == nil {
 		// file exists
 		cmd := exec.Command("node", "-e", "console.log('Coverage: ' + JSON.parse(fs.readFileSync('coverage/coverage-summary.json')).total.lines.pct + '%')")
 		execute(cmd)
