@@ -1,13 +1,61 @@
 export class PackageDatabase {
+    repository_list:Repository[];
+    package_directory_path:String;
 
+    constructor(repository_list:Repository[], package_directory_path:String) {
+        this.package_directory_path = package_directory_path;
+        this.repository_list = repository_list;
+    }
+
+    /**
+     * Collects package contents
+     * @param package_name string name of package
+     * @returns package contents in UNIMLEMENTED format, or null on failure
+     */
+    get_contents_of(package_name:String) {
+        for(let repo of this.repository_list) {
+            if(repo.name == package_name) {
+                return repo.get_contents(this.package_directory_path);
+            }
+        }
+        return null;
+    }
 }
 
-export class Repo {
-    name: string;
-    current_version: string;
+export class Repository {
+    name: String;
+    current_version: String;
+    size: Number;
+    rating: Number;
+    history_list: History[];
 
-    constructor(name:string, current_version:string) {
+    constructor(name:String, current_version:String, size:Number, rating:Number, history_list:History[]) {
         this.name = name;
         this.current_version = current_version;
+        this.size = size;
+        this.rating = rating;
+        this.history_list = history_list;
+    }
+
+    /**
+     * Given a directory to pull from, find directory with same name and return contents
+     * UNIMPLEMENTEDD
+     * @param path Path to directory containing package
+     * @returns Package contents OR success status, unsure of exact implementation
+     */
+    get_contents(path:String) {
+        return -1;
+    }
+}
+
+export class History {
+    action: String;
+    version: String;
+    username: String
+
+    constructor(action:String, version:String, username:String) {
+        this.action = action;
+        this.version = version;
+        this.username = username;
     }
 }
