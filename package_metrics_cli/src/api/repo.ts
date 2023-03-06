@@ -20,6 +20,26 @@ export class PackageDatabase {
         }
         return null;
     }
+
+    /**
+     * Add new repo to the list, exclude if repo already exists
+     * @param new_repo 
+     * @returns {boolean} repo added or not
+     */
+    addPackage(new_repo:Repository) {
+        for(let repo of this.repository_list) {
+            if(repo.name == new_repo.name) {
+                return false;
+            }
+        }
+        this.repository_list.push(new_repo);
+        return true;
+    }
+
+    // UNIMPLEMENTED
+    updatePackage(name:String, new_version:String, new_contents:unknown) {
+        return -1;
+    }
 }
 
 export class Repository {
@@ -39,12 +59,20 @@ export class Repository {
 
     /**
      * Given a directory to pull from, find directory with same name and return contents
-     * UNIMPLEMENTEDD
+     * UNIMPLEMENTED
      * @param path Path to directory containing package
      * @returns Package contents OR success status, unsure of exact implementation
      */
     get_contents(path:String) {
         return -1;
+    }
+
+    /**
+     * Adds history event to repo history
+     * @param new_history 
+     */
+    addHistory(new_history:History) {
+        this.history_list.push(new_history);
     }
 }
 
