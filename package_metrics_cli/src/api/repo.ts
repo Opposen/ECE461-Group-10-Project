@@ -46,14 +46,12 @@ export class Repository {
     name: String;
     current_version: String;
     size: Number;
-    rating: Number;
     history_list: History[];
 
     constructor(name:String, current_version:String, size:Number, rating:Number, history_list:History[]) {
         this.name = name;
         this.current_version = current_version;
         this.size = size;
-        this.rating = rating;
         this.history_list = history_list;
     }
 
@@ -71,8 +69,16 @@ export class Repository {
      * Adds history event to repo history
      * @param new_history 
      */
-    addHistory(new_history:History) {
+    add_history(new_history:History) {
         this.history_list.push(new_history);
+    }
+
+    /**
+     * UNIMPLEMENTED
+     * @returns {number} 0-1 representing weighted score
+     */
+    get_rating() {
+        return -1;
     }
 }
 

@@ -20,12 +20,11 @@ describe('Repository tests', () => {
         expect(repo.name).toBe("repo1")
         expect(repo.current_version).toBe("1.0")
         expect(repo.size).toBe(10)
-        expect(repo.rating).toBe(0)
         expect(repo.history_list).not.toBeNull()
     });
 
     test('Add to history', () => {
-        repo.addHistory(new History("Dowload", "1.0", "ece30861defaultadminuser"))
+        repo.add_history(new History("Dowload", "1.0", "ece30861defaultadminuser"))
         expect(repo.history_list[0].username).toBe("ece30861defaultadminuser")
     });
 });
