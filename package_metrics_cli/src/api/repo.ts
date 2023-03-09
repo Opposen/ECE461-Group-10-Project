@@ -86,10 +86,3 @@ export class History {
     action: String;
     version: String;
     username: String
-
-    constructor(action:String, version:String, username:String) {
-        this.action = action;
-        this.version = version;
-        this.username = username;
-    }
-}
