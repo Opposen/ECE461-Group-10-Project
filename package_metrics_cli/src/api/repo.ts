@@ -48,7 +48,7 @@ export class Repository {
     size: Number;
     history_list: History[];
 
-    constructor(name:String, current_version:String, size:Number, rating:Number, history_list:History[]) {
+    constructor(name:String, current_version:String, size:Number, history_list:History[]) {
         this.name = name;
         this.current_version = current_version;
         this.size = size;
@@ -86,3 +86,10 @@ export class History {
     action: String;
     version: String;
     username: String
+
+    constructor(action:String, version:String, username:String) {
+        this.action = action;
+        this.version = version;
+        this.username = username;
+    }
+}
