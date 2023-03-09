@@ -56,7 +56,6 @@ if (options.file) {
     }
 
     // for each package in the list get the community profile
-    console.log('URL NET_SCORE RAMP_UP_SCORE CORRECTNESS_SCORE BUS_FACTOR_SCORE RESPONSIVE_MAINTAINER_SCORE LICENSE_SCORE');
     urlList.forEach(async (url: string) => {
 
         logToFile(url, 1, "URL");
@@ -94,7 +93,7 @@ if (options.file) {
 
             const netScore = calculateNetScore(rampUp, correctness, busFactor, responsiveness, licenseCompatibility);
             // print all scores the the console rounded to 2 decimal places
-            console.log(`${url} ${netScore.toFixed(2)} ${rampUp.toFixed(2)} ${correctness.toFixed(2)} ${busFactor.toFixed(2)} ${responsiveness.toFixed(2)} ${licenseCompatibility.toFixed(2)}`)
+            console.log(`{"URL":${url}, "NET_SCORE":${netScore.toFixed(2)}, "RAMP_UP_SCORE":${rampUp.toFixed(2)}, "CORRECTNESS_SCORE":${correctness.toFixed(2)}, "BUS_FACTOR_SCORE":${busFactor.toFixed(2)}, "RESPONSIVE_MAINTAINER_SCORE":${responsiveness.toFixed(2)}, "LICENSE_SCORE":${licenseCompatibility.toFixed(2)}}`);
             //console.log(`${url} ${netScore} ${rampUp} ${correctness} ${busFactor} ${responsiveness} ${licenseCompatibility}`)
         } catch (error) {
             logToFile(error, 1, "ERROR");
