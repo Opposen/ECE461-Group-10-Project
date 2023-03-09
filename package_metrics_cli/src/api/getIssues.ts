@@ -11,7 +11,7 @@ export async function getIssues(owner: string, repo: string) : Promise<issuesRes
         });
         return response;
     } catch (error) {
-        console.error(error);
+        // console.error(error);
         throw error;
     }
 }

@@ -23,7 +23,7 @@ export async function getLicense(owner: string, repo: string) : Promise<any> {
         );          
         return response;
     } catch (error) {
-        console.error(error);
+        // console.error(error);
         throw error;
     }
 }

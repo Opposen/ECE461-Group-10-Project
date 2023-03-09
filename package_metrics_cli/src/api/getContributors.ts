@@ -11,7 +11,7 @@ export async function getContributors(owner: string, repo: string): Promise<cont
         });
         return response;
     } catch (error) {
-        console.error(error);
+        // console.error(error);
         throw error;
     }
 }

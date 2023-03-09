@@ -1,3 +1,1 @@
-https://github.com/lodash/lodash
-https://www.npmjs.com/package/File
-https://www.npmjs.com/package/browserify
+https://github.com/davisjam/safe-regex
