@@ -16,7 +16,7 @@ describe('Repository tests', () => {
     let repo:Repository;
 
     test('Check attributes', () => {
-        repo = new Repository("repo1", "1.0", 10, 0, []);
+        repo = new Repository("repo1", "1.0", 10, []);
         expect(repo.name).toBe("repo1")
         expect(repo.current_version).toBe("1.0")
         expect(repo.size).toBe(10)
@@ -38,10 +38,10 @@ describe('Package Database tests', () => {
     });
 
     test('Add repositories', () => {
-        package_database.addPackage(new Repository("repo1", "1.0", 10, 0, []))
-        package_database.addPackage(new Repository("repo2", "1.1", 20, 0.5, []))
-        package_database.addPackage(new Repository("repo3", "2.0", 5, 0, []))
-        package_database.addPackage(new Repository("repo4", "0.5", 3, 1, []))
+        package_database.addPackage(new Repository("repo1", "1.0", 10, []))
+        package_database.addPackage(new Repository("repo2", "1.1", 20, []))
+        package_database.addPackage(new Repository("repo3", "2.0", 5, []))
+        package_database.addPackage(new Repository("repo4", "0.5", 3, []))
         expect(package_database.repository_list.length).toBe(4);
     });
 
