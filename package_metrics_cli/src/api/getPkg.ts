@@ -10,7 +10,7 @@ export async function getPkg(name: string, version: string): Promise<pkgResponse
         const json = await response.json();
         return json;
     } catch (error) {
-        console.error(error);
+        // console.error(error);
         throw error;
     }
 }

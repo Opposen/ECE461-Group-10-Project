@@ -11,7 +11,7 @@ export async function getCommits(owner: string, repo: string) : Promise<commitsR
         });
         return response;
     } catch (error) {
-        console.error(error);
+        // console.error(error);
         throw error;
     }
 }
