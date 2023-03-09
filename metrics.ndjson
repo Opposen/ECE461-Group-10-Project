@@ -1,7 +1,5 @@
-[
-    {"metric": "RAMP_UP_SCORE", "api": "rest", "filepath": "package_metrics_cli/src/api/getReadme.ts", "line": "6"},
-    {"metric": "CORRECTNESS_SCORE", "api": "clone", "filepath": "package_metrics_cli/src/api/clone.ts", "line": "5"},
-    {"metric": "BUS_FACTOR_SCORE", "api": "rest", "filepath": "package_metrics_cli/src/api/getCommits.ts", "line": "7"},
-    {"metric": "RESPONSIVE_MAINTAINER_SCORE", "api": "rest", "filepath": "package_metrics_cli/src/api/getIssues.ts", "line": "7"},
-    {"metric": "LICENSE_SCORE", "api": "graphql", "filepath": "package_metrics_cli/src/api/getLicense.ts", "line": "9"}
-]
+{"metric": "RAMP_UP_SCORE", "api": "rest", "filepath": "package_metrics_cli/src/api/getReadme.ts", "line": "6"}
+{"metric": "CORRECTNESS_SCORE", "api": "clone", "filepath": "package_metrics_cli/src/api/clone.ts", "line": "5"}
+{"metric": "BUS_FACTOR_SCORE", "api": "rest", "filepath": "package_metrics_cli/src/api/getCommits.ts", "line": "7"}
+{"metric": "RESPONSIVE_MAINTAINER_SCORE", "api": "rest", "filepath": "package_metrics_cli/src/api/getIssues.ts", "line": "7"}
+{"metric": "LICENSE_SCORE", "api": "graphql", "filepath": "package_metrics_cli/src/api/getLicense.ts", "line": "9"}

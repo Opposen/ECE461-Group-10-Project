@@ -1,0 +1,17 @@
+https://github.com/jonschlinkert/even
+https://github.com/jonschlinkert/odd
+https://github.com/freeCodeCamp/freeCodeCamp
+https://github.com/EbookFoundation/free-programming-books
+https://github.com/996icu/996.ICU
+https://github.com/jwasham/coding-interview-university
+https://github.com/sindresorhus/awesome
+https://github.com/donnemartin/system-design-primer
+https://github.com/facebook/react
+https://github.com/vuejs/vue
+https://github.com/jmforsythe/Git-Heat-Map
+https://github.com/cloudinary/cloudinary_npm
+https://www.npmjs.com/package/express
+https://github.com/nullivex/nodist
+https://github.com/lodash/lodash
+https://www.npmjs.com/package/browserify
+https://github.com/open-mmlab/mmpose
