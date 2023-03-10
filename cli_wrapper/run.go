@@ -29,8 +29,8 @@ func execute(cmd *exec.Cmd) {
 */
 func install() {
 	// log.Println("Installing dependencies in userland...")
-	// execute npm install from within the "package_metrics_cli" directory
-	os.Chdir("package_metrics_cli")
+	// execute npm install from within the "module_registry" directory
+	os.Chdir("module_registry")
 	cmd := exec.Command("bash", "-c", "npm install > /dev/null 2>&1")
 	execute(cmd)
 	fmt.Println("Dependencies installed")
@@ -43,8 +43,8 @@ func install() {
 */
 func build() {
 	// log.Println("Building CLI")
-	// execute npm run build from within the "package_metrics_cli" directory
-	os.Chdir("package_metrics_cli")
+	// execute npm run build from within the "module_registry" directory
+	os.Chdir("module_registry")
 	cmd := exec.Command("bash", "-c", "npm run build > /dev/null 2>&1")
 	execute(cmd)
 	fmt.Println("CLI built")
@@ -59,8 +59,8 @@ func build() {
 */
 func test() {
 	// log.Println("Testing CLI")
-	// execute npm run test from within the "package_metrics_cli" directory
-	os.Chdir("package_metrics_cli")
+	// execute npm run test from within the "module_registry" directory
+	os.Chdir("module_registry")
 	cmd := exec.Command("bash", "-c", "npm run test > /dev/null 2>&1")
 	execute(cmd)
 
@@ -104,7 +104,7 @@ func test() {
 func run() {
 	// log.Println("Running CLI")
 	// execute the cli with the URL_FILE as the argument
-	cmd := exec.Command("node", "package_metrics_cli/out/index.js", "-f", os.Args[1])
+	cmd := exec.Command("node", "module_registry/out/index.js", "-f", os.Args[1])
 	execute(cmd)
 }
 
