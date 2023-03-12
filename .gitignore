@@ -1,7 +1,7 @@
-/package_metrics_cli/node_modules
-/package_metrics_cli/coverage
-/package_metrics_cli/out
-/package_metrics_cli/testResults.json
+/module_registry/node_modules
+/module_registry/coverage
+/module_registry/out
+/module_registry/testResults.json
 /tmp
 .env
 .package-cli.log
