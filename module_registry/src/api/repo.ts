@@ -118,9 +118,7 @@ export class Repository {
             await deleteClonedRepo(`./tmp/${this.name}`);
 
             let netScore = calculateNetScore(rampUp, correctness, busFactor, responsiveness, licenseCompatibility);
-            // print all scores the the console rounded to 2 decimal places
-            //console.log(`${url} ${netScore.toFixed(2)} ${rampUp.toFixed(2)} ${correctness.toFixed(2)} ${busFactor.toFixed(2)} ${responsiveness.toFixed(2)} ${licenseCompatibility.toFixed(2)}`)
-            //console.log(`${url} ${netScore} ${rampUp} ${correctness} ${busFactor} ${responsiveness} ${licenseCompatibility}`)
+            
             return netScore;
         } catch (error) {
             logToFile(error, 1, "ERROR");
