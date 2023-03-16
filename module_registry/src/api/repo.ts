@@ -97,11 +97,12 @@ export class Repository {
 
     /**
      * Collects information on github repo and calculates weighted metrics based on repo information
-     * @returns {number} 0-1 representing weighted score
+     * @returns {number} 0-1 representing weighted score, -1 on failure
      */
     async get_rating() {
         
         try {
+            // Get repo features
         	let communityProfileResponse = await getCommunityProfile(this.owner, this.name);
             let issuesResponse = await getIssues(this.owner, this.name);
             let readmeResponse = await getReadme(this.owner, this.name);
@@ -110,6 +111,7 @@ export class Repository {
            	let commitsResponse = await getCommits(this.owner, this.name);
             await cloneRepo(this.url, `./tmp/${this.name}`);
 
+            //calculate individual metrics
             let busFactor = calculateBusFactor(contributorsResponse, commitsResponse);
             let rampUp = calculateRampUp(communityProfileResponse, readmeResponse);
             let responsiveness = calculateResponsiveness(issuesResponse);
@@ -117,15 +119,21 @@ export class Repository {
             let correctness = calculateCorrectness(`./tmp/${this.name}`);
             await deleteClonedRepo(`./tmp/${this.name}`);
 
+            // calculate weighted score
             let netScore = calculateNetScore(rampUp, correctness, busFactor, responsiveness, licenseCompatibility);
-            
+
             return netScore;
         } catch (error) {
             logToFile(error, 1, "ERROR");
         }
-
+        return -1
     }
 
+    /**
+     * Collects readme response
+     * readme.data should return a string
+     * @returns Response to GET request for readme file
+     */
     get_readme() {
         return getReadme(this.owner, this.name);
     }
