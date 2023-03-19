@@ -27,7 +27,7 @@ A `setEnvVars.js` file specifying logging details and github authentication shou
 ### Example setEnvVars.js
 ```
 process.env.LOG_FILE = 'testlog'
-process.env.GITHUB_TOKEN = 'ghp_8z9iGAqH44z5Uy1aXHz0zl4G9Jxulb4gH4Tm'
+process.env.GITHUB_TOKEN = 'ghp_nqp7EaHtK5SKzj5WEA2hRbsq6zeejjnnfuHwR'
 ```
 Before running tests, add you github token as a string to the `module_registry/.jest/setEnvVars.js`
 
