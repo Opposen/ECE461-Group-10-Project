@@ -61,7 +61,8 @@ func test() {
 	// log.Println("Testing CLI")
 	// execute npm run test from within the "module_registry" directory
 	os.Chdir("module_registry")
-	cmd := exec.Command("bash", "-c", "npm run test > /dev/null 2>&1")
+	//cmd := exec.Command("bash", "-c", "npm run test > /dev/null 2>&1")
+	cmd := exec.Command("bash", "-c", "npm run test -- --silent=false")
 	execute(cmd)
 
 	error := false
