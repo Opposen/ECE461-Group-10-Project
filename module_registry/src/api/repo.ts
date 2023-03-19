@@ -13,8 +13,11 @@ import { getLicense } from "./getLicense";
 import { getContributors } from "./getContributors";
 import { getCommits } from "./getCommits";
 import { calculateNetScore } from "../metrics/netScore";
-import { cloneRepo, deleteClonedRepo } from "./clone";
+import { getPkgGithubURL } from "./getPkgGithubURL";
+import { cloneRepo, createTempFolder, deleteClonedRepo } from "./clone";
 
+const parse = require("parse-github-url");
+const fs = require("fs");
 
 export class PackageDatabase {
     repository_list:Repository[];
@@ -60,6 +63,7 @@ export class PackageDatabase {
     }
 }
 
+
 export class Repository {
     name: string;
     owner: string;
@@ -100,7 +104,16 @@ export class Repository {
      * @returns {number} 0-1 representing weighted score, -1 on failure
      */
     async get_rating() {
-        
+
+        // create a tmp directory to clone the repos into
+        if (!fs.existsSync("./tmp")) {
+            try {
+                createTempFolder();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
         try {
             // Get repo features
         	let communityProfileResponse = await getCommunityProfile(this.owner, this.name);
@@ -108,7 +121,8 @@ export class Repository {
             let readmeResponse = await getReadme(this.owner, this.name);
             let licenseResponse = await getLicense(this.owner, this.name);
             let contributorsResponse = await getContributors(this.owner, this.name);
-           	let commitsResponse = await getCommits(this.owner, this.name);
+            let commitsResponse = await getCommits(this.owner, this.name);
+            fs.rmSync(`./tmp/${this.name}`, { recursive: true, force: true });
             await cloneRepo(this.url, `./tmp/${this.name}`);
 
             //calculate individual metrics
@@ -124,7 +138,7 @@ export class Repository {
 
             return netScore;
         } catch (error) {
-            logToFile(error, 1, "ERROR");
+            logToFile(error, 0, "ERROR");
         }
         return -1
     }
@@ -137,6 +151,41 @@ export class Repository {
     get_readme() {
         return getReadme(this.owner, this.name);
     }
+}
+
+/**
+ * Creates a repository object based entirely on information collected from the url
+ * @param url to find the repo
+ * @returns correctly instantiated repostory object
+ */
+export async function create_repo_from_url(url: string) {
+
+    // If given npmjs repo, get corresponding github repo
+    let true_url = url;
+    if (url.includes("npmjs.com")) {
+        const [ pkgName ] = url.split("/").slice(-1);
+        try {
+            true_url = await getPkgGithubURL(pkgName, 'latest');
+        } catch (error) {
+            console.log(`${url} does not have a github repository`);
+            logToFile(url, 1, "URL", "does not have a github repository");
+        }
+    }
+    
+    // Collect repo info
+    const parsed_repo = parse(true_url);
+
+    // If prexisting version number exists, get it, otherwise declare as first version
+    /*
+    let true_version = "1.0";
+    const regexp = new RegExp('^(\d+\.)?(\d+\.)?(\*|\d+)$');
+    if(regexp.test(parsed_repo.branch)) {
+        true_version = parsed_repo.branch;
+    } 
+    */
+
+    const repository = new Repository(parsed_repo.name, parsed_repo.owner, true_url, "1.0", 0, []);
+    return repository;
 }
 
 export class History {
