@@ -60,28 +60,28 @@ if (options.file) {
 
         logToFile(url, 1, "URL");
 
-		// convert npmjs url to github url if necessary
-		let githubURL = url;
-		if (url.includes("npmjs.com")) {
-			const [ pkgName ] = url.split("/").slice(-1);
-			try {
-				githubURL = await getPkgGithubURL(pkgName, 'latest');
-			} catch (error) {
-				console.log(`${url} does not have a github repository`);
+        // convert npmjs url to github url if necessary
+        let githubURL = url;
+        if (url.includes("npmjs.com")) {
+            const [pkgName] = url.split("/").slice(-1);
+            try {
+                githubURL = await getPkgGithubURL(pkgName, 'latest');
+            } catch (error) {
+                console.log(`${url} does not have a github repository`);
                 logToFile(url, 1, "URL", "does not have a github repository");
-				return;
-			}
-		}
+                return;
+            }
+        }
 
-		const repo = parse(githubURL);
+        const repo = parse(githubURL);
 
         try {
-        	const communityProfileResponse = await getCommunityProfile(repo.owner, repo.name);
+            const communityProfileResponse = await getCommunityProfile(repo.owner, repo.name);
             const issuesResponse = await getIssues(repo.owner, repo.name);
             const readmeResponse = await getReadme(repo.owner, repo.name);
             const licenseResponse = await getLicense(repo.owner, repo.name);
             const contributorsResponse = await getContributors(repo.owner, repo.name);
-           	const commitsResponse = await getCommits(repo.owner, repo.name);
+            const commitsResponse = await getCommits(repo.owner, repo.name);
             await cloneRepo(githubURL, `./tmp/${repo.name}`);
 
             const busFactor = calculateBusFactor(contributorsResponse, commitsResponse);
@@ -93,7 +93,7 @@ if (options.file) {
 
             const netScore = calculateNetScore(rampUp, correctness, busFactor, responsiveness, licenseCompatibility);
             // print all scores the the console rounded to 2 decimal places
-            console.log(`{"URL":${url}, "NET_SCORE":${netScore.toFixed(2)}, "RAMP_UP_SCORE":${rampUp.toFixed(2)}, "CORRECTNESS_SCORE":${correctness.toFixed(2)}, "BUS_FACTOR_SCORE":${busFactor.toFixed(2)}, "RESPONSIVE_MAINTAINER_SCORE":${responsiveness.toFixed(2)}, "LICENSE_SCORE":${licenseCompatibility.toFixed(2)}}`);
+            console.log(`{"URL":"${url}", "NET_SCORE":${netScore.toFixed(2)}, "RAMP_UP_SCORE":${rampUp.toFixed(2)}, "CORRECTNESS_SCORE":${correctness.toFixed(2)}, "BUS_FACTOR_SCORE":${busFactor.toFixed(2)}, "RESPONSIVE_MAINTAINER_SCORE":${responsiveness.toFixed(2)}, "LICENSE_SCORE":${licenseCompatibility.toFixed(2)}}`);
             //console.log(`${url} ${netScore} ${rampUp} ${correctness} ${busFactor} ${responsiveness} ${licenseCompatibility}`)
         } catch (error) {
             logToFile(error, 1, "ERROR");
