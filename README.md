@@ -2,7 +2,9 @@
 Aneesh Iyer  
 Logan Stapleton  
 Daniyaal Rasheed  
-Liam E Roach  
+Liam E Roach 
+
+Robert Sego
 
 # to get the cli up-and-running:
 0. there should be an executable `run` in the root directory, if not (or the compiled executable is incompatable with your os) navigate to `/cli_wrapper` and run `make` in the terminal to generate a new executable in the root directory
@@ -19,3 +21,13 @@ LOG_LEVEL=1
 LOG_FILE=/Users/myUser/IdeaProjects/files
 ```
 Each user will need to replace the GITHUB_TOKEN value with their own authentication token
+
+# Testing
+A `setEnvVars.js` file specifying logging details and github authentication should be addedd under the `module_registry/.jest` directory
+### Example setEnvVars.js
+```
+process.env.LOG_FILE = 'testlog'
+process.env.GITHUB_TOKEN = 'ghp_nqp7EaHtK5SKzj5WEA2hRbsq6zeejjnnfuHwR'
+```
+Before running tests, add you github token as a string to the `module_registry/.jest/setEnvVars.js`
+
