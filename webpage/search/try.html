@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stylesheet.css">
+    <script defer src="script3.js"> </script>
+    <title>Main</title>
+</head>
+<body>
+    <div class="search-container">
+      <input id="search-input" class="search-input" type="text" placeholder="Type To Search...">
+      <button class="search-button" type="submit" onclick="performSearch()">Search</button>
+      <div>
+        <input type="checkbox" id="regex-checkbox">
+        <label for="regex-checkbox">Use Regular Expression</label>
+      </div>
+    </div>
+    <div id="results" class="results"></div>
+    <div class="upload-container">
+        <label for="file-upload" class="upload-label">Choose a file to upload:</label>
+        <input id="file-upload" type="file" multiple>
+        <button id="upload-button" class="upload-button" onclick="uploadFile()">Upload</button>
+    </div>
+    <div id="uploaded-files" class="uploaded-files"></div>
+
+  </body>
+  </html>
