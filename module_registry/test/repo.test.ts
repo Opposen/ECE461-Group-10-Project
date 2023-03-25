@@ -110,5 +110,6 @@ describe('Package Database Integration Tests', () => {
         logToFile(repo_list[0].name, 2, "1st Regex Search Result");
         expect(repo_list.length).toBe(1);
         expect(repo_list[0].name).toBe("lodash")
+
     });
 });
