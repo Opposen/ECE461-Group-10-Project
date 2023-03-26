@@ -61,6 +61,42 @@ export class PackageDatabase {
     updatePackage(name:string, new_version:string, new_contents:unknown) {
         return -1;
     }
+
+    /**
+     * Get a list of repositories that have a name similar to the input
+     * @param queried_name string representing name being searched for
+     * @returns list of repositories that match the queried name
+     */
+    search_by_name(queried_name:string) {
+        let name_matched_repo_list:Repository[] = [];
+        for(let repo of this.repository_list) {
+            // Check if name matches, ignore case
+            if(repo.name.toLowerCase().includes(queried_name.toLowerCase())) {
+                name_matched_repo_list.push(repo);
+            }
+        }
+        logToFile(name_matched_repo_list.length, 1, "Number Matched Repos");
+        return name_matched_repo_list;
+    }
+
+    /**
+     * Get a list of repositories whos name or readme matches a regular expression
+     * @param regexp regular expression being used
+     * @returns list of repositories that contain positive result for the regular expression
+     */
+    async search_by_regex(regexp:RegExp) {
+        let regex_matched_repo_list:Repository[] = [];
+        for(let repo of this.repository_list) {
+            let repo_readme_response = await repo.get_readme()
+            let readme_text = Buffer.from(repo_readme_response.data.content, "base64").toString("ascii");
+            // Check if regex matches name or readme, ignore case
+            if(regexp.test(repo.name) || regexp.test(readme_text)) {
+                regex_matched_repo_list.push(repo);
+            }
+        }
+        logToFile(regex_matched_repo_list.length, 1, "Number Matched Repos");
+        return regex_matched_repo_list;
+    }
 }
 
 

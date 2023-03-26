@@ -7,7 +7,8 @@ afterEach(() => {
     jest.clearAllMocks();
 });
 
-describe('Repository Initialization tests', () => {
+
+describe('Repository Unit Tests', () => {
     let repo:Repository;
 
     test('Check attributes', () => {
@@ -34,7 +35,8 @@ describe('Repository Initialization tests', () => {
     
 });
 
-describe('Package Database tests', () => {
+
+describe('Package Database Unit Tests', () => {
     let package_database:PackageDatabase;
 
     test('Create database, check constructor', () => {
@@ -57,9 +59,10 @@ describe('Package Database tests', () => {
 
 });
 
-jest.setTimeout(240000); // Extend timeout for readme readin
 
-describe('Repo Api Call Tests', () => {
+jest.setTimeout(240000); // Extend timeout for readme readin
+describe('Repo Api Integration Tests', () => {
+
     test('Get Readme', async () => {
         let repo = new Repository("lodash", "lodash", "https://github.com/lodash/lodash", "1.0", 10, []);
         let readme_response = await repo.get_readme();
@@ -80,5 +83,33 @@ describe('Repo Api Call Tests', () => {
         let rating = await repo.get_rating();
         logToFile(rating, 0, "browserify rating");
         expect(Math.round(rating*100)/100).not.toBe(-1);
+    });
+});
+
+
+describe('Package Database Integration Tests', () => {
+    let package_database:PackageDatabase;
+
+    test('Create database', async () => {
+        let repo1:Repository = await create_repo_from_url("https://github.com/lodash/lodash");
+        let repo2:Repository = await create_repo_from_url("https://www.npmjs.com/package/browserify");
+        package_database = new PackageDatabase([repo1, repo2], "");
+        expect(package_database.repository_list).not.toBeNull();
+    });
+
+    test('Name Search', () => {
+        let repo_list:Repository[] = package_database.search_by_name("browse");
+        logToFile(repo_list[0].name, 2, "1st Name Search Result");
+        expect(repo_list.length).toBe(1);
+        expect(repo_list[0].name).toBe("browserify")
+    });
+
+    test('Regex Search', async () => {
+        let regexp:RegExp = new RegExp("Iterating arrays, objects, & strings")
+        let repo_list:Repository[] = await package_database.search_by_regex(regexp);
+        logToFile(repo_list[0].name, 2, "1st Regex Search Result");
+        expect(repo_list.length).toBe(1);
+        expect(repo_list[0].name).toBe("lodash")
+
     });
 });
