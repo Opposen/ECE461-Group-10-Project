@@ -5,8 +5,8 @@ Daniyaal Rasheed
 Liam E Roach 
 
 Robert Sego
-
 Ryan Marchand
+Andy Lin
 
 # to get the cli up-and-running:
 0. there should be an executable `run` in the root directory, if not (or the compiled executable is incompatable with your os) navigate to `/cli_wrapper` and run `make` in the terminal to generate a new executable in the root directory
