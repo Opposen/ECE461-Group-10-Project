@@ -11,8 +11,7 @@ function handleRegisterSubmit(event) {
     }
     if (messages.length > 0) {
         event.preventDefault();
-    }
-    else {
+    } else {
         errorElement.innerText = messages.join(',');
         event.preventDefault();
         window.location.href = "login.html";

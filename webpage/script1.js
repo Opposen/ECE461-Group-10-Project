@@ -12,8 +12,7 @@ function handleFormSubmit(event) {
     if (messages.length > 0) {
         event.preventDefault();
         errorElement.innerText = messages.join(',');
-    }
-    else {
+    } else {
         event.preventDefault();
         window.location.href = "search/try.html";
     }
