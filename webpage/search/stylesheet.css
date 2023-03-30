@@ -1,15 +1,15 @@
 .search-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
   }
 
   .search-input {
-    padding: 8px 12px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    outline: none;
+  padding: 8px 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
   }
   .search-button {
     padding: 8px 12px;
