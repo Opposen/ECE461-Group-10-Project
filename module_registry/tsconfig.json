@@ -1,8 +1,4 @@
 {
-    "parserOptions": {
-        "project": true,
-        "tsconfigRootDir": "src",
-    },
     "compilerOptions": {
         "rootDir": "src",
         "outDir": "out",
@@ -15,9 +11,5 @@
     },
     "exclude": [
         "test"
-    ],
-    "include": [
-        "src/**/*.ts",
-        "src/*.ts",
-    ],
+    ]
 }
