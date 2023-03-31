@@ -34,7 +34,9 @@ input[type="text"],
 input[type="password"] {
   width: 100%;
   padding: 12px 0;
-  margin: 20px 0 25px 0px;
+  margin-top: 20px;
+  margin-bottom: 25px;
+  margin-left: 0px;
   border: none;
   border-bottom: 2px solid #ff9f1c;
   background-color: transparent;
