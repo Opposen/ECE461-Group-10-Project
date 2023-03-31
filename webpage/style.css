@@ -33,7 +33,7 @@ h2 {
 input[type="text"],
 input[type="password"] {
   width: 100%;
-  padding: 12px 0;
+  padding: 12px 0px 0px 0px;
   margin-top: 20px;
   margin-bottom: 25px;
   margin-left: 0px;
