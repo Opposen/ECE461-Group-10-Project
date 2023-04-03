@@ -61,7 +61,7 @@ func test() {
 	// log.Println("Testing CLI")
 	// execute npm run test from within the "module_registry" directory
 	os.Chdir("module_registry")
-	//cmd := exec.Command("bash", "-c", "npm run test > /dev/null 2>&1")
+	// cmd := exec.Command("bash", "-c", "npm run test > /dev/null 2>&1")
 	cmd := exec.Command("bash", "-c", "npm run test -- --silent=false")
 	execute(cmd)
 
@@ -93,8 +93,7 @@ func test() {
 		cmd := exec.Command("node", "-e", "console.log(JSON.parse(fs.readFileSync('coverage/output-final.json')).numPassedTests + '/' + JSON.parse(fs.readFileSync('coverage/output-final.json')).numTotalTests + ' test cases passed. ' + JSON.parse(fs.readFileSync('coverage/coverage-summary.json')).total.lines.pct + '% line coverage achieved.')")
 		execute(cmd)
 	}
-}	
-
+}
 
 /*
 ./run URL_FILE
@@ -105,7 +104,7 @@ func test() {
 func run() {
 	// log.Println("Running CLI")
 	// execute the cli with the URL_FILE as the argument
-	cmd := exec.Command("node", "module_registry/out/index.js", "-f", os.Args[1])
+	cmd := exec.Command("node", "module_registry/out/index.js", "-f", os.Args[1]) //nolint:gosec
 	execute(cmd)
 }
 

@@ -18,7 +18,7 @@ Andy Lin
 A `.env` file specifying logging details and github authentication token should be added to the root directory of the repo
 ### Example `.env` file
 ```
-GITHUB_TOKEN=ghp_nqp7EaHtK5SKzj5WEA2hRbsq6zeejjnnfuHwR
+GITHUB_TOKEN=ghp_exampletokenhere
 LOG_LEVEL=1
 LOG_FILE=/Users/myUser/IdeaProjects/files
 ```
@@ -29,7 +29,7 @@ A `setEnvVars.js` file specifying logging details and github authentication shou
 ### Example setEnvVars.js
 ```
 process.env.LOG_FILE = 'testlog'
-process.env.GITHUB_TOKEN = 'ghp_nqp7EaHtK5SKzj5WEA2hRbsq6zeejjnnfuHwR'
+process.env.GITHUB_TOKEN = 'ghp_exampletokenhere'
 ```
 Before running tests, add you github token as a string to the `module_registry/.jest/setEnvVars.js`
 
