@@ -32,15 +32,19 @@ for(const line of file_lines) {
     database.addUser(new User(user_vals[0], user_vals[1], false));
 }
 
-function can_login(given_username:string, given_password:string) {
-    if (document == null) {
+export function can_login(given_username:string, given_password:string) {
+    //if (document == null) {
+    //    return false
+    //}
+
+    var username = document.getElementById("username") as HTMLFormElement;
+    var password = document.getElementById("password") as HTMLFormElement;
+
+    if(username.value === null || password.value === null) {
         return false;
     }
 
-
-    var given_username = document.getElementById("username").value;
-    var given_password = document.getElementById("password").value;
-    if (database.can_login(given_username, given_password)) {
+    if (database.can_login(username.value, password.value)) {
         logToFile(null, 2, "Successful login");
         return true;
     }
