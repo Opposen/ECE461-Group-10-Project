@@ -7,6 +7,8 @@
     <title>Login</title>
     <link rel = "stylesheet" href="style.css">
     <script defer src="script1.js"> </script>
+    <!-- <script type = "text/javascript" src="test.js"></script>  -->
+    <script type = "text/javascript" src="../module_registry/out/user/userMain.js"></script>
 </head>
 <body>
 <div class="Box">
@@ -16,11 +18,11 @@
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required>
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
+        <input type="password" id="password" name="password" onclick="javascript: can_login()" required>
         <input type="submit" value="Login">
         <div class="register">Don't have an account? <a href="register.html">Register here</a></div>
     </form>
-</div>
-
-</body>
+<!-- </div>
+<input type="button" onclick="javascript: myFunction()" value="Display"/>
+</body> -->
 </html>

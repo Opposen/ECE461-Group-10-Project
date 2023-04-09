@@ -38,6 +38,21 @@ export class UserDatabase {
         this.user_list.push(user);
         return true; // user successfully added
     }
+
+    /**
+     * check if given credentials are valid
+     * @param given_username 
+     * @param given_password 
+     * @returns {boolen} indicating validity
+     */
+    can_login(given_username:string, given_password:string) {
+        for(let user of this.user_list) {
+            if((user.name == given_username) && (user.password == given_password)) {
+                return true; // do not add user with same name
+            }
+        }
+        return false;
+    }
 }
 
 export class User {
