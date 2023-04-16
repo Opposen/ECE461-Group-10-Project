@@ -6,9 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel = "stylesheet" href="style.css">
-    <script defer src="script1.js"> </script>
-    <!-- <script type = "text/javascript" src="test.js"></script>  -->
-    <script type = "text/javascript" src="../module_registry/out/user/userMain.js"></script>
+
+    <script>var exports = {};</script>
+    <!--<script defer src="../module_registry/bundled/user_bundled.js" type="module"></script>-->
+    <script defer src="../module_registry/out/user/user.js" type="module"></script>
+    <script defer src="../webpage/loginScript.js" type="module"></script>
+    
+    <!--<script>var exports = {};</script>-->
+    <!--<script defer src="../module_registry/out/logging/logging.js"></script>-->
+    <!--<script defer type="module" src="../module_registry/out/user/user.js"></script>-->
+    <!--<script defer type="module" src="../module_registry/out/user/userMain.js"></script>-->
+    
+    <!--<script defer src="../module_registry/bundled/user_bundled.js"></script>-->
+
+    <!--<script defer src="module.js" type="module"></script>-->
+    <!--<script defer src="script1.js" type="module"></script>-->
+    
+
 </head>
 <body>
 <div class="Box">
@@ -18,11 +32,8 @@
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required>
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" onclick="javascript: can_login()" required>
+        <input type="password" id="password" name="password" required>
         <input type="submit" value="Login">
         <div class="register">Don't have an account? <a href="register.html">Register here</a></div>
     </form>
-<!-- </div>
-<input type="button" onclick="javascript: myFunction()" value="Display"/>
-</body> -->
 </html>
