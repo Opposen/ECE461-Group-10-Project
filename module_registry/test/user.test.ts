@@ -34,7 +34,8 @@ describe('User tests', () => {
 
     test('Login check',  () => {
         database.reset();
-        expect(database.can_login('ece30861defaultadminuser', 'correcthorsebatterystaple123(!__+@**(A’”`;DROP TABLE packages;')).toBe(true); // admin should remain
+        expect(database.can_login('ece30861defaultadminuser', 'correcthorsebatterystaple123(!__+@**(A’”`;DROP TABLE packages;')).toBe(true); // admin should be present
+        expect(database.can_login('User1', 'These')).toBe(false); // no other user should be able to log
     });
 });
 
