@@ -58,9 +58,8 @@ function login_checks(event) {
     } else {
         localStorage.setItem("isAdmin", username.value=="ece30861defaultadminuser");
         event.preventDefault();
-        window.location.href = "search/try.html";
+        window.location.href = "search/mainMenu.html";
     }
-    
 }
 
 // Read in file lines
@@ -75,7 +74,7 @@ for(const line of file_lines) {
     database.addUser(new User(user_vals[0], user_vals[1], false));
 }
 
-// get page info, attatch login logic to login button
+// get page info, attach login logic to login button
 const form = document.getElementById("form");
 if(form != null) {
     form.addEventListener("submit", login_checks);
