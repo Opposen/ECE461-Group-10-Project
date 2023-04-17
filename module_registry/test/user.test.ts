@@ -31,5 +31,10 @@ describe('User tests', () => {
         expect(database.user_list[0].name).toBe('ece30861defaultadminuser'); // admin should remain
         expect(database.user_list[1]).toBeUndefined(); // no other user should be in list
     });
+
+    test('Login check',  () => {
+        database.reset();
+        expect(database.can_login('ece30861defaultadminuser', 'correcthorsebatterystaple123(!__+@**(A’”`;DROP TABLE packages;')).toBe(true); // admin should remain
+    });
 });
 
