@@ -6,7 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel = "stylesheet" href="style.css">
-    <script defer src="script1.js"> </script>
+
+    <script>var exports = {};</script>
+    <script defer src="../module_registry/out/user/user.js" type="module"></script>
+    <script defer src="../module_registry/out/logging/logging.js" type="module"></script>
+    <script defer src="../webpage/loginScript.js" type="module"></script>
+
 </head>
 <body>
 <div class="Box">
@@ -20,7 +25,4 @@
         <input type="submit" value="Login">
         <div class="register">Don't have an account? <a href="register.html">Register here</a></div>
     </form>
-</div>
-
-</body>
 </html>
