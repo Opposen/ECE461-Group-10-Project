@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="main.css">
-    <script defer src="mainScript.js" type="module"> </script>
+    <link rel="stylesheet" href="styles/main.css">
+    <script defer src="scripts/mainScript.js" type="module"> </script>
     <title>Main</title>
 </head>
 <body>
@@ -25,8 +25,10 @@
     </div>
     <div id="uploaded-files" class="uploaded-files"></div>
     <div class="add-user-container">
-        <input type="adduser" value="Add User">
+        <form id ="form" action="/" method="post">
+            <input type="submit" value="Add User">
+        </form>
     </div>
-
 </body>
+
 </html>
