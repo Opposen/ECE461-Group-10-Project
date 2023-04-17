@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const User = exports.User;
 const UserDatabase = exports.UserDatabase;
 
+localStorage.clear();
+
 /**
  * loads any file in without fs
  * @param {*} filePath 
@@ -41,14 +43,11 @@ function login_checks(event) {
     let messages = [];
     if (username.value === "" || username.value === null) {
         messages.push("Username is required");
-    }
-    else if (password.value.length < 5) {
+    } else if (password.value.length < 5) {
         messages.push("Password should be at least 5 characters");
-    }
-    else if(username.value === null || password.value === null) {
+    } else if(username.value === null || password.value === null) {
         messages.push("Null username and password");
-    }
-    else if (!database.can_login(username.value, password.value)) {
+    } else if (!database.can_login(username.value, password.value)) {
         messages.push("Incorrect username or password");
     }
 
@@ -57,6 +56,7 @@ function login_checks(event) {
         event.preventDefault();
         errorElement.innerText = messages.join(",");
     } else {
+        localStorage.setItem("isAdmin", username.value=="ece30861defaultadminuser");
         event.preventDefault();
         window.location.href = "search/try.html";
     }
