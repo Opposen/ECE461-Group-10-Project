@@ -24,7 +24,7 @@ function admin_check(event) {
         errorElement.innerText = messages.join(",");
     } else {
         event.preventDefault();
-        window.location.href = "addUser.html";
+        window.location.href = "register.html";
     }
 }
 

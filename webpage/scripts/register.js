@@ -14,7 +14,7 @@ function handleRegisterSubmit(event) {
     } else {
         errorElement.innerText = messages.join(',');
         event.preventDefault();
-        window.location.href = "login.html";
+        window.location.href = "mainMenu.html";
     }
 }
 var form_R = document.getElementById("form-R");
