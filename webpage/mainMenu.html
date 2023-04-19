@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/main.css">
+    <script>var exports = {};</script>
     <script defer src="scripts/mainScript.js" type="module"> </script>
     <title>Main</title>
 </head>
@@ -24,10 +25,11 @@
         <button id="upload-button" class="upload-button" onclick="uploadFile()">Upload</button>
     </div>
     <div id="uploaded-files" class="uploaded-files"></div>
-    <div class="add-user-container">
-        <form id ="form" action="/" method="post">
-            <input type="submit" value="Add User">
-        </form>
+    <div class="login_container">
+        <button id="login-button" class="login-button" onclick="exports.go_to_login()">Go Back to Login</button>
+    </div>
+    <div class="adduser_container">
+        <button id="adduser-button" class="adduser-button" onclick="exports.admin_check()">Add User</button>
     </div>
 </body>
 

@@ -44,18 +44,33 @@
   justify-content: center;
 }
 
-input[type="submit"] {
+.adduser-button {
+  padding: 8px 12px;
+  font-size: 1rem;
   background-color: #ff9f1c;
   color: #000;
-  padding: 12px;
   border: none;
-  border-radius: 8px;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 16px;
-  transition: all 0.3s ease;
+  margin-top: 3px;
 }
 
-input[type="submit"]:hover {
+.adduser-button:hover {
   background-color: #ffc09f;
+}
+
+
+.login-button {
+  padding: 8px 12px;
+  font-size: 1rem;
+  background-color: #ff9f1c;
   color: #000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 3px;
+}
+
+.login-button:hover {
+  background-color: #ffc09f;
 }

@@ -1,35 +1,39 @@
 
+exports.admin_check = exports.go_to_login = void 0;
+
+/**
+ * placeholder
+ */
 function performSearch() {
 
 }
 
+/**
+ * placeholder
+ */
 function uploadFile() {
 
 }
 
-function admin_check(event) {
-    
-    let messages = [];
+/**
+ * check if current user is admin
+ * @returns 
+ */
+function admin_check() {
 
     // Check if user is an admin
-    var isAdmin = Boolean(localStorage.getItem("isAdmin")=="true");
+    var isAdmin = Boolean(sessionStorage.getItem("isAdmin")=="true");
     if(!isAdmin) {
-        console.log("fgqioewioubiu");
-        messages.push("Requires admin status");
+        return
     }
-
-    // if there is a message, admin check failed
-    if (messages.length > 0) {
-        event.preventDefault();
-        errorElement.innerText = messages.join(",");
-    } else {
-        event.preventDefault();
-        window.location.href = "register.html";
-    }
+    window.location.href = "register.html";
 }
+exports.admin_check = admin_check;
 
-// get page info, attach login logic to login button
-const form = document.getElementById("form");
-if(form != null) {
-    form.addEventListener("submit", admin_check);
+/**
+ * redirect to login page
+ */
+function go_to_login() {
+    window.location.href = "login.html";
 }
+exports.go_to_login = go_to_login;

@@ -2,35 +2,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 
 const User = exports.User;
 const UserDatabase = exports.UserDatabase;
-
-localStorage.clear();
-
-/**
- * loads any file in without fs
- * @param {*} filePath 
- * @returns contents of file
- */
-function loadFile(filePath) {
-    var result = null;
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("GET", filePath, false);
-    xmlhttp.send();
-    if (xmlhttp.status==200) {
-        result = xmlhttp.responseText;
-    }
-    return result;
-}
-
-/**
- * gets contents of user storing file, converts to string
- * @param {*} path to user file
- * @returns each line of file as string
- */
-function get_users(path) {
-    const file_data = loadFile(path);
-    const file_lines = file_data.split('\n');
-    return file_lines;
-}
+const get_users = exports.get_users;
+sessionStorage.clear();
 
 /**
  * check if requirements met to login, give failure message to page if not met
@@ -56,7 +29,7 @@ function login_checks(event) {
         event.preventDefault();
         errorElement.innerText = messages.join(",");
     } else {
-        localStorage.setItem("isAdmin", username.value=="ece30861defaultadminuser");
+        sessionStorage.setItem("isAdmin", username.value=="ece30861defaultadminuser");
         event.preventDefault();
         window.location.href = "mainMenu.html";
     }
