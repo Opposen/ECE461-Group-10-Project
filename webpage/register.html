@@ -5,19 +5,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    <link rel = "stylesheet" href="style.css">
-    <script defer src="script2.js"> </script>
+    <link rel = "stylesheet" href="styles/login.css">
+    <script>var exports = {};</script>
+    <script defer type = "text/javascript" src="scripts/io_ops.js" type="module"> </script>
+    <script defer type = "text/javascript" src="scripts/register.js" type="module"> </script>
+    
 </head>
 <body>
-<div class="Box">
-    <h2>Register New User</h2>
-    <div id = "error"></div>
-    <form id="form-R" action="/" method="post">
-        <label for="username">Create Username:</label>
-        <input type="text" id="username" name="username" required>
-        <label for="password">Create Password:</label>
-        <input type="password" id="password" name="password" required>
-        <input type="submit" value="Create Account">
-    </form>
-</body>
+    <div class="Box">
+        <h2>Register New User</h2>
+        <div id = "error"></div>
+        <form id="form-R" action="/" method="post">
+            <label for="username">Create Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Create Password:</label>
+            <input type="password" id="password" name="password" required>
+            <input type="submit" value="Create Account">
+        </form>
+    </body>
+    <div class="main_container">
+        <button id="main-button" class="main-button" onclick="exports.go_to_main()">Go Back to Main Menu</button>
+    </div>
 </html>

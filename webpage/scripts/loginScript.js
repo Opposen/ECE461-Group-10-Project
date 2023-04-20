@@ -2,33 +2,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 
 const User = exports.User;
 const UserDatabase = exports.UserDatabase;
-
-/**
- * loads any file in without fs
- * @param {*} filePath 
- * @returns contents of file
- */
-function loadFile(filePath) {
-    var result = null;
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("GET", filePath, false);
-    xmlhttp.send();
-    if (xmlhttp.status==200) {
-        result = xmlhttp.responseText;
-    }
-    return result;
-}
-
-/**
- * gets contents of user storing file, converts to string
- * @param {*} path to user file
- * @returns each line of file as string
- */
-function get_users(path) {
-    const file_data = loadFile(path);
-    const file_lines = file_data.split('\n');
-    return file_lines;
-}
+const get_users = exports.get_users;
+sessionStorage.clear();
 
 /**
  * check if requirements met to login, give failure message to page if not met
@@ -41,14 +16,11 @@ function login_checks(event) {
     let messages = [];
     if (username.value === "" || username.value === null) {
         messages.push("Username is required");
-    }
-    else if (password.value.length < 5) {
+    } else if (password.value.length < 5) {
         messages.push("Password should be at least 5 characters");
-    }
-    else if(username.value === null || password.value === null) {
+    } else if(username.value === null || password.value === null) {
         messages.push("Null username and password");
-    }
-    else if (!database.can_login(username.value, password.value)) {
+    } else if (!database.can_login(username.value, password.value)) {
         messages.push("Incorrect username or password");
     }
 
@@ -57,10 +29,10 @@ function login_checks(event) {
         event.preventDefault();
         errorElement.innerText = messages.join(",");
     } else {
+        sessionStorage.setItem("isAdmin", username.value=="ece30861defaultadminuser");
         event.preventDefault();
-        window.location.href = "search/try.html";
+        window.location.href = "mainMenu.html";
     }
-    
 }
 
 // Read in file lines
@@ -75,7 +47,7 @@ for(const line of file_lines) {
     database.addUser(new User(user_vals[0], user_vals[1], false));
 }
 
-// get page info, attatch login logic to login button
+// get page info, attach login logic to login button
 const form = document.getElementById("form");
 if(form != null) {
     form.addEventListener("submit", login_checks);
