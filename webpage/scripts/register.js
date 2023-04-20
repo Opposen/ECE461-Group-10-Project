@@ -61,6 +61,13 @@ function go_to_main() {
 }
 exports.go_to_main = go_to_main;
 
+
+// ------------------ Main Script ------------------------------
+
+if(sessionStorage.getItem("loggedIn") == "false") {
+    window.location.href = "login.html";
+}
+
 var form_R = document.getElementById("form-R");
 if(form_R != null) {
     form_R.addEventListener("submit", handleRegisterSubmit);

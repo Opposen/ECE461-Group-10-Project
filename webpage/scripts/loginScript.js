@@ -30,10 +30,18 @@ function login_checks(event) {
         errorElement.innerText = messages.join(",");
     } else {
         sessionStorage.setItem("isAdmin", username.value=="ece30861defaultadminuser");
+        sessionStorage.setItem("loggedIn", "true");
         event.preventDefault();
         window.location.href = "mainMenu.html";
     }
 }
+
+
+// ------------------ Main Script ------------------------------
+
+// If user has entered login page, they are not logged in, and are not an admin
+sessionStorage.setItem("loggedIn", "false");
+sessionStorage.setItem("isAdmin", "false");
 
 // Read in file lines
 const file_lines = get_users("user_list.txt")

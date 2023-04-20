@@ -37,3 +37,10 @@ function go_to_login() {
     window.location.href = "login.html";
 }
 exports.go_to_login = go_to_login;
+
+
+// ------------------ Main Script ------------------------------
+
+if(sessionStorage.getItem("loggedIn") == "false") {
+    window.location.href = "login.html";
+}
