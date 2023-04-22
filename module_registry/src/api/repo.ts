@@ -189,13 +189,16 @@ export class Repository {
     }
 
     /**
-     * s
+     * calculate metric for number of version specific dependencies
+     * @returns 0-1, 1 representing all dependencies are version specific, 0 represents none
      */
     pinned_metric() {
+        // helper function for detecting if value is unique in list
         function onlyUnique(value:string, index:number, array:string[]) {
             return array.indexOf(value) === index;
         }
 
+        // get all dependencies throughout hisitory, even repeats
         let all_dependencies:string[] = []
         for(let history of this.history_list) {
             for(let dependency of history.dependencies) {
@@ -209,6 +212,7 @@ export class Repository {
         let num_dependencies = unique_dependencies.length;
         let num_pinned = num_dependencies - unpinned_dependencies.length;
 
+        // if no dependencies, should be 1 since technically all existing dependencies are pinned
         if(num_dependencies == 0) {
             return 1;
         }
