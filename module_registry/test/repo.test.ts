@@ -1,5 +1,4 @@
 import { describe, expect, jest, test, beforeEach, afterEach } from '@jest/globals';
-import { read } from 'fs';
 import { PackageDatabase, Repository, History, create_repo_from_url} from '../src/api/repo'
 import { logToFile } from '../src/logging/logging';
 
@@ -20,8 +19,32 @@ describe('Repository Unit Tests', () => {
     });
 
     test('Add to history', () => {
-        repo.add_history(new History("Download", "1.0", "ece30861defaultadminuser"))
+        repo.add_history(new History("Download", "1.0", "ece30861defaultadminuser", ["Dependency1", "Dependency2", "Dependency3"]))
         expect(repo.history_list[0].username).toBe("ece30861defaultadminuser")
+    });
+
+    //The fraction of dependencies that are pinned to at least a specific major+minor version
+    // number of dependencies associated with at least one specific version divided by total dependencies
+    test('Dependency metric', async () => {
+        // no dependencies, scor of 1
+        const history1 = new History("Download", "1.0", "ece30861defaultadminuser", [])
+        repo = new Repository("repo1", "owner", "url", "1.0", 10, [history1]);
+        expect(repo.pinned_metric()).toBe(1)
+
+        // 1 pinned dependency, total 2, score of 0.5
+        const history2 = new History("Download", "1.1", "ece30861defaultadminuser", ["dependency1", "dependency2"])
+        const history3 = new History("Download", "2.0", "ece30861defaultadminuser", ["dependency1"])
+        repo = new Repository("repo2", "owner", "url", "2.0", 10, [history2, history3]);
+        expect(repo.pinned_metric()).toBe(0.5)
+
+        // only pinned dependencies, score of 1
+        const history4 = new History("Download", "3.0", "ece30861defaultadminuser", [])
+        repo = new Repository("repo3", "owner", "url", "3.0", 10, [history1, history2, history3, history4]);
+        expect(repo.pinned_metric()).toBe(1)
+
+        // no pinned dependencies, score of 0
+        repo = new Repository("repo4", "owner", "url", "2.0", 10, [history2]);
+        expect(repo.pinned_metric()).toBe(0)
     });
 
     test('Create using url', async () => {
@@ -31,8 +54,6 @@ describe('Repository Unit Tests', () => {
         expect(url_repo.owner).toBe("lodash")
         expect(url_repo.current_version).toBe("1.0")
     });
-
-    
 });
 
 

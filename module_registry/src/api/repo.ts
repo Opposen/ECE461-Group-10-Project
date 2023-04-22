@@ -187,6 +187,33 @@ export class Repository {
     get_readme() {
         return getReadme(this.owner, this.name);
     }
+
+    /**
+     * s
+     */
+    pinned_metric() {
+        function onlyUnique(value:string, index:number, array:string[]) {
+            return array.indexOf(value) === index;
+        }
+
+        let all_dependencies:string[] = []
+        for(let history of this.history_list) {
+            for(let dependency of history.dependencies) {
+                all_dependencies.push(dependency)
+            } 
+        }
+
+        let unique_dependencies:string[] = all_dependencies.filter(onlyUnique);
+        let unpinned_dependencies:string[] = this.history_list[this.history_list.length - 1].dependencies;
+
+        let num_dependencies = unique_dependencies.length;
+        let num_pinned = num_dependencies - unpinned_dependencies.length;
+
+        if(num_dependencies == 0) {
+            return 1;
+        }
+        return num_pinned / num_dependencies ;
+    }
 }
 
 /**
@@ -227,11 +254,13 @@ export async function create_repo_from_url(url: string) {
 export class History {
     action: string;
     version: string;
-    username: string
+    username: string;
+    dependencies: string[];
 
-    constructor(action:string, version:string, username:string) {
+    constructor(action:string, version:string, username:string, dependencies:string[]) {
         this.action = action;
         this.version = version;
         this.username = username;
+        this.dependencies = dependencies;
     }
 }
