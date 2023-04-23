@@ -71,6 +71,12 @@ describe('Repo Api Integration Tests', () => {
         expect(readme_text.substring(10,37)).toBe("[Site](https://lodash.com/)")
     });
 
+    test('Review Metric', async () => {
+        let repo = new Repository("lodash", "lodash", "https://github.com/lodash/lodash", "1.0", 10, []);
+        let metric = repo.review_metric()
+        expect(Math.round(metric*100)/100).not.toBe(-1)
+    });
+
     test('Get Rating on Github Repo', async () => {
         let repo = await create_repo_from_url("https://github.com/lodash/lodash");
         let rating = await repo.get_rating();
