@@ -73,7 +73,8 @@ describe('Repo Api Integration Tests', () => {
 
     test('Review Metric', async () => {
         let repo = new Repository("lodash", "lodash", "https://github.com/lodash/lodash", "1.0", 10, []);
-        let metric = repo.review_metric()
+        logToFile(null, 2, "Entering review")
+        let metric = await repo.review_metric();
         expect(Math.round(metric*100)/100).not.toBe(-1)
     });
 

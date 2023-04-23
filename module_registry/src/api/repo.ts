@@ -1,3 +1,5 @@
+import { Octokit } from "@octokit/core";
+
 import { logToFile } from "../logging/logging";
 
 import { calculateBusFactor } from "../metrics/busFactor";
@@ -186,6 +188,30 @@ export class Repository {
      */
     get_readme() {
         return getReadme(this.owner, this.name);
+    }
+
+    
+    async review_metric() {
+        logToFile(null, 2, "Entered review")
+        
+        let pullResponse;
+        const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
+        try {
+            pullResponse = await octokit.request('GET /repos/{owner}/{repo}/pulls?state=closed', {
+                owner: this.owner,
+                repo: this.name,
+                per_page: 100,
+            });
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+        //const issuesResponse = await getIssues(this.owner, this.name);
+        const pullData = pullResponse.data;
+        console.log(JSON.stringify(pullData))
+        logToFile(JSON.stringify(pullData), 0, "Pull Data");
+
+        return -1;
     }
 }
 
