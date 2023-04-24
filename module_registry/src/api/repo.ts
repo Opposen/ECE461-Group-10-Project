@@ -189,7 +189,6 @@ export class Repository {
     get_readme() {
         return getReadme(this.owner, this.name);
     }
-
     
     async review_metric() {
         
@@ -238,6 +237,35 @@ export class Repository {
 
         // return reviewed requests divided by number of all pull requests
         return (num_reviewed/pullResponse.data.length);
+    /**
+     * calculate metric for number of version specific dependencies
+     * @returns 0-1, 1 representing all dependencies are version specific, 0 represents none
+     */
+    pinned_metric() {
+        // helper function for detecting if value is unique in list
+        function onlyUnique(value:string, index:number, array:string[]) {
+            return array.indexOf(value) === index;
+        }
+
+        // get all dependencies throughout hisitory, even repeats
+        let all_dependencies:string[] = []
+        for(let history of this.history_list) {
+            for(let dependency of history.dependencies) {
+                all_dependencies.push(dependency)
+            } 
+        }
+
+        let unique_dependencies:string[] = all_dependencies.filter(onlyUnique);
+        let unpinned_dependencies:string[] = this.history_list[this.history_list.length - 1].dependencies;
+
+        let num_dependencies = unique_dependencies.length;
+        let num_pinned = num_dependencies - unpinned_dependencies.length;
+
+        // if no dependencies, should be 1 since technically all existing dependencies are pinned
+        if(num_dependencies == 0) {
+            return 1;
+        }
+        return num_pinned / num_dependencies ;
     }
 }
 
@@ -279,11 +307,13 @@ export async function create_repo_from_url(url: string) {
 export class History {
     action: string;
     version: string;
-    username: string
+    username: string;
+    dependencies: string[];
 
-    constructor(action:string, version:string, username:string) {
+    constructor(action:string, version:string, username:string, dependencies:string[]) {
         this.action = action;
         this.version = version;
         this.username = username;
+        this.dependencies = dependencies;
     }
 }
