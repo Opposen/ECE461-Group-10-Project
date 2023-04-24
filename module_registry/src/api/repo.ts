@@ -208,8 +208,16 @@ export class Repository {
         }
         //const issuesResponse = await getIssues(this.owner, this.name);
         const pullData = pullResponse.data;
-        console.log(JSON.stringify(pullData))
-        logToFile(JSON.stringify(pullData), 0, "Pull Data");
+        //const merged_at = pullResponse.data.merged_at;
+        //const reviews = pullResponse.data.reviews;
+        //console.log(JSON.stringify(pullData))
+        for(let pull of pullData) {
+            if(pull.merged_at != null) {
+                console.log(JSON.stringify(pull))
+            }
+        }
+        
+        //logToFile(JSON.stringify(pullData), 0, "Pull Data");
 
         return -1;
     }
