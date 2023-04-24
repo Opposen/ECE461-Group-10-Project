@@ -192,7 +192,6 @@ export class Repository {
 
     
     async review_metric() {
-        logToFile(null, 2, "Entered review")
         
         let pullResponse;
         const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
@@ -206,20 +205,41 @@ export class Repository {
             console.error(error);
             throw error;
         }
-        //const issuesResponse = await getIssues(this.owner, this.name);
-        const pullData = pullResponse.data;
-        //const merged_at = pullResponse.data.merged_at;
-        //const reviews = pullResponse.data.reviews;
-        //console.log(JSON.stringify(pullData))
-        for(let pull of pullData) {
+        
+        // No pull requests made, score is 0 since all pushes were to main and unreviewed
+        if(pullResponse.data.length == 0) {
+            return 0;
+        }
+
+        // Get list of the review comments urls for each merged pull request
+        let review_comments_urls = [];
+        for(let pull of pullResponse.data) {
             if(pull.merged_at != null) {
-                console.log(JSON.stringify(pull))
+                review_comments_urls.push(pull.review_comments_url)
             }
         }
         
-        //logToFile(JSON.stringify(pullData), 0, "Pull Data");
+        // Check reviews, add to num reviewed if not empty
+        let num_reviewed = 0;
+        let review_comment_response;
+        for(let url of review_comments_urls) {
+            try {
+                review_comment_response = await octokit.request('GET '.concat(url));
+            } catch (error) {
+                console.error(error);
+                throw error;
+            }
 
-        return -1;
+            logToFile(JSON.stringify(review_comment_response.data) != "[]", 2, "Pull request was reviewed")
+            //console.log(JSON.stringify(review_comment_response.data))
+
+            if(JSON.stringify(review_comment_response.data) != "[]") {
+                num_reviewed += 1;
+            }
+        }
+
+        // return reviewed requests divided by number of all pull requests
+        return (num_reviewed/pullResponse.data.length);
     }
 }
 
