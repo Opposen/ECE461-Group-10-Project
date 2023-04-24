@@ -72,10 +72,17 @@ describe('Repo Api Integration Tests', () => {
     });
 
     test('Review Metric', async () => {
+        // Some pull requests are reviewed, so should not be 0
         let repo = await create_repo_from_url("https://www.npmjs.com/package/browserify");
-        logToFile(null, 2, "Entering review")
         let metric = await repo.review_metric();
+        logToFile(metric, 0, "browserify review metric");
         expect(Math.round(metric*100)/100).not.toBe(0)
+
+        // No pull requests yet have been reviewed, so should be less than 1
+        repo = await create_repo_from_url("https://github.com/lodash/lodash");
+        metric = await repo.review_metric();
+        logToFile(metric, 0, "lodash review metric");
+        expect(Math.round(metric*100)/100).not.toBe(1)
     });
 
     test('Get Rating on Github Repo', async () => {

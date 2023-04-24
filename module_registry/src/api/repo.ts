@@ -193,6 +193,7 @@ export class Repository {
     
     async review_metric() {
         
+        // get list of pull requests
         let pullResponse;
         const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
         try {
@@ -229,9 +230,6 @@ export class Repository {
                 console.error(error);
                 throw error;
             }
-
-            logToFile(JSON.stringify(review_comment_response.data) != "[]", 2, "Pull request was reviewed")
-            //console.log(JSON.stringify(review_comment_response.data))
 
             if(JSON.stringify(review_comment_response.data) != "[]") {
                 num_reviewed += 1;
