@@ -1,3 +1,5 @@
+import { Octokit } from "@octokit/core";
+
 import { logToFile } from "../logging/logging";
 
 import { calculateBusFactor } from "../metrics/busFactor";
@@ -187,7 +189,54 @@ export class Repository {
     get_readme() {
         return getReadme(this.owner, this.name);
     }
+    
+    async review_metric() {
+        
+        // get list of pull requests
+        let pullResponse;
+        const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
+        try {
+            pullResponse = await octokit.request('GET /repos/{owner}/{repo}/pulls?state=closed', {
+                owner: this.owner,
+                repo: this.name,
+                per_page: 100,
+            });
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+        
+        // No pull requests made, score is 0 since all pushes were to main and unreviewed
+        if(pullResponse.data.length == 0) {
+            return 0;
+        }
 
+        // Get list of the review comments urls for each merged pull request
+        let review_comments_urls = [];
+        for(let pull of pullResponse.data) {
+            if(pull.merged_at != null) {
+                review_comments_urls.push(pull.review_comments_url)
+            }
+        }
+        
+        // Check reviews, add to num reviewed if not empty
+        let num_reviewed = 0;
+        let review_comment_response;
+        for(let url of review_comments_urls) {
+            try {
+                review_comment_response = await octokit.request('GET '.concat(url));
+            } catch (error) {
+                console.error(error);
+                throw error;
+            }
+
+            if(JSON.stringify(review_comment_response.data) != "[]") {
+                num_reviewed += 1;
+            }
+        }
+
+        // return reviewed requests divided by number of all pull requests
+        return (num_reviewed/pullResponse.data.length);
     /**
      * calculate metric for number of version specific dependencies
      * @returns 0-1, 1 representing all dependencies are version specific, 0 represents none
