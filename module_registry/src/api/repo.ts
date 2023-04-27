@@ -189,7 +189,42 @@ export class Repository {
     get_readme() {
         return getReadme(this.owner, this.name);
     }
+
+    /**
+     * collect the bill of materials for the repo, extract the dependency names and their
+     * version
+     * @returns list of dependencies and their version number
+     */
+    async get_current_dependencies() {
+        const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
+        try {
+            const response = await octokit.request('GET /repos/{owner}/{repo}/dependency-graph/sbom', {
+                accept: 'application/vnd.github+json',
+                owner: this.owner,
+                repo: this.name,
+                basehead: "main"
+                
+            });
+
+            let dependencies = [];
+            for(let dependency of response.data.sbom.packages) {
+                console.log(dependency.versionInfo);
+                dependencies.push(dependency.name.concat(" ", dependency.versionInfo))
+            }
+
+            return dependencies
+
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
     
+    /**
+     * Uses pull request query to find how much of the code was reviewed before it was added
+     * to the repository
+     * @returns 0-1 representing porportion of reviewed code
+     */
     async review_metric() {
         
         // get list of pull requests
@@ -253,7 +288,7 @@ export class Repository {
         let all_dependencies:string[] = []
         for(let history of this.history_list) {
             for(let dependency of history.dependencies) {
-                all_dependencies.push(dependency)
+                all_dependencies.push(dependency);
             } 
         }
 
@@ -276,7 +311,7 @@ export class Repository {
  * @param url to find the repo
  * @returns correctly instantiated repostory object
  */
-export async function create_repo_from_url(url: string) {
+export async function create_repo_from_url(url: string, creator_username: string) {
 
     // If given npmjs repo, get corresponding github repo
     let true_url = url;
@@ -293,16 +328,14 @@ export async function create_repo_from_url(url: string) {
     // Collect repo info
     const parsed_repo = parse(true_url);
 
-    // If prexisting version number exists, get it, otherwise declare as first version
-    /*
-    let true_version = "1.0";
-    const regexp = new RegExp('^(\d+\.)?(\d+\.)?(\*|\d+)$');
-    if(regexp.test(parsed_repo.branch)) {
-        true_version = parsed_repo.branch;
-    } 
-    */
-
+    // Create basic repo object
     const repository = new Repository(parsed_repo.name, parsed_repo.owner, true_url, "1.0", 0, []);
+
+    // Collect dependencies and annd history event to repository
+    let dependencies = await repository.get_current_dependencies();
+    let first_history = new History("upload", repository.current_version, creator_username, dependencies)
+    repository.history_list.push(first_history)
+
     return repository;
 }
 

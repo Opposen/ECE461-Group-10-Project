@@ -23,9 +23,7 @@ describe('Repository Unit Tests', () => {
         expect(repo.history_list[0].username).toBe("ece30861defaultadminuser")
     });
 
-    //The fraction of dependencies that are pinned to at least a specific major+minor version
-    // number of dependencies associated with at least one specific version divided by total dependencies
-    test('Dependency metric', async () => {
+    test('Pinned Metric Unit', async () => {
         // no dependencies, scor of 1
         const history1 = new History("Download", "1.0", "ece30861defaultadminuser", [])
         repo = new Repository("repo1", "owner", "url", "1.0", 10, [history1]);
@@ -48,7 +46,7 @@ describe('Repository Unit Tests', () => {
     });
 
     test('Create using url', async () => {
-        const url_repo = await create_repo_from_url("https://github.com/lodash/lodash");
+        const url_repo = await create_repo_from_url("https://github.com/lodash/lodash", "username");
 
         expect(url_repo.name).toBe("lodash")
         expect(url_repo.owner).toBe("lodash")
@@ -94,28 +92,42 @@ describe('Repo Api Integration Tests', () => {
 
     test('Review Metric', async () => {
         // Some pull requests are reviewed, so should not be 0
-        let repo = await create_repo_from_url("https://www.npmjs.com/package/browserify");
+        let repo = await create_repo_from_url("https://www.npmjs.com/package/browserify", "username");
         let metric = await repo.review_metric();
         logToFile(metric, 0, "browserify review metric");
         expect(Math.round(metric*100)/100).not.toBe(0)
 
         // No pull requests yet have been reviewed, so should be less than 1
-        repo = await create_repo_from_url("https://github.com/lodash/lodash");
+        repo = await create_repo_from_url("https://github.com/lodash/lodash", "username");
         metric = await repo.review_metric();
         logToFile(metric, 0, "lodash review metric");
         expect(Math.round(metric*100)/100).not.toBe(1)
     });
 
+    test('Pinned Metric Integration', async () => {
+        // Some pull requests are reviewed, so should not be 0
+        let repo = await create_repo_from_url("https://www.npmjs.com/package/browserify", "username");
+        let metric = await repo.pinned_metric();
+        logToFile(metric, 0, "browserify pinned metric");
+        expect(Math.round(metric*100)/100).toBe(0)
+
+        // No pull requests yet have been reviewed, so should be less than 1
+        repo = await create_repo_from_url("https://github.com/lodash/lodash", "username");
+        metric = await repo.pinned_metric();
+        logToFile(metric, 0, "lodash pinned metric");
+        expect(Math.round(metric*100)/100).toBe(0)
+    });
+
     test('Get Rating on Github Repo', async () => {
-        let repo = await create_repo_from_url("https://github.com/lodash/lodash");
+        let repo = await create_repo_from_url("https://github.com/lodash/lodash", "username");
         let rating = await repo.get_rating();
         logToFile(rating, 0, "lodash rating");
         expect(Math.round(rating*100)/100).not.toBe(-1);
     });
 
     test('Get Rating on NJPM Repo', async () => {
-        let repo = await create_repo_from_url("https://www.npmjs.com/package/browserify");
-        let rating = await repo.get_rating();
+        let repo:Repository = await create_repo_from_url("https://www.npmjs.com/package/browserify", "username");
+        let rating:number = await repo.get_rating();
         logToFile(rating, 0, "browserify rating");
         expect(Math.round(rating*100)/100).not.toBe(-1);
     });
@@ -126,8 +138,8 @@ describe('Package Database Integration Tests', () => {
     let package_database:PackageDatabase;
 
     test('Create database', async () => {
-        let repo1:Repository = await create_repo_from_url("https://github.com/lodash/lodash");
-        let repo2:Repository = await create_repo_from_url("https://www.npmjs.com/package/browserify");
+        let repo1:Repository = await create_repo_from_url("https://github.com/lodash/lodash", "username");
+        let repo2:Repository = await create_repo_from_url("https://www.npmjs.com/package/browserify", "username");
         package_database = new PackageDatabase([repo1, repo2], "");
         expect(package_database.repository_list).not.toBeNull();
     });
